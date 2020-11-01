@@ -77,9 +77,9 @@ export const auth = (email, password, isSignup) => {
             username: email,
             password: password
         }
-        let url = 'https://localhost:5001/api/authentication/register';
+        let url = 'https://www.adventurouscoding.com/api/authentication/register';
         if (!isSignup) {
-            url = 'https://localhost:5001/api/authentication/login';
+            url = 'https://www.adventurouscoding.com/api/authentication/login';
         }
         axios.post(url, authData)
             .then(response => {

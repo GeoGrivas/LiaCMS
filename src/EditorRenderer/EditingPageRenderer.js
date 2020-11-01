@@ -28,7 +28,7 @@ class PageRenderer extends Component {
   componentDidMount = () => {
     if (this.props.isAuthenticated) {
       this.initEmptyPage();
-      axios.get('https://localhost:5001/api/pages/' + encodeURIComponent(this.props.currentPage)).then(response => {
+      axios.get('https://www.adventurouscoding.com/api/pages/' + encodeURIComponent(this.props.currentPage)).then(response => {
         const page = response.data.content;
         const layout = response.data.layout.content;
         const layoutName = response.data.layoutName;
@@ -259,7 +259,7 @@ class PageRenderer extends Component {
     this.setState(prevState => ({ ...prevState, components: design }));
   }
   loadLayout = (layoutName) => {
-    axios.get('https://localhost:5001/api/layouts/' + encodeURIComponent(layoutName)).then(response => {
+    axios.get('https://www.adventurouscoding.com/api/layouts/' + encodeURIComponent(layoutName)).then(response => {
       const layout = response.data.content;
       if (layout) {
         this.drawLayout(layout);

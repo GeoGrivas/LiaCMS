@@ -13,13 +13,13 @@ class PagesManager extends Component {
     }
 
     componentDidMount = () => {
-        axios.get("https://localhost:5001/api/pages", {
+        axios.get("https://www.adventurouscoding.com/api/pages", {
             headers: {
                 'Authorization': `bearer ${this.props.token}`
             }
         }).then(response => {
             const pages = response.data.map(page => (decodeURIComponent(page)));
-            axios.get("https://localhost:5001/api/layouts", {
+            axios.get("https://www.adventurouscoding.com/api/layouts", {
                 headers: {
                     'Authorization': `bearer ${this.props.token}`
                 }
@@ -30,7 +30,7 @@ class PagesManager extends Component {
         });
     }
     loadPageHandler = () => {
-        axios.get('https://localhost:5001/api/pages/' + encodeURIComponent(this.state.selectedPage), {
+        axios.get('https://www.adventurouscoding.com/api/pages/' + encodeURIComponent(this.state.selectedPage), {
             headers: {
                 'Authorization': `Bearer ${this.props.token}`
             }
@@ -47,7 +47,7 @@ class PagesManager extends Component {
         });
     }
     removePageHandler = () => {
-        axios.delete('https://localhost:5001/api/pages/delete/' + encodeURIComponent(this.state.selectedPage), {
+        axios.delete('https://www.adventurouscoding.com/api/pages/delete/' + encodeURIComponent(this.state.selectedPage), {
             headers: {
                 'Authorization': `Bearer ${this.props.token}`
             }
@@ -60,13 +60,13 @@ class PagesManager extends Component {
         });
     }
     savePageHandler = () => {
-        axios.put('https://localhost:5001/api/pages/put', { path: encodeURIComponent(this.state.currentPage), content: JSON.stringify(this.props.design), layoutName: this.state.selectedLayout }, {
+        axios.put('https://www.adventurouscoding.com/api/pages/put', { path: encodeURIComponent(this.state.currentPage), content: JSON.stringify(this.props.design), layoutName: this.state.selectedLayout }, {
             headers: {
                 'Authorization': `Bearer ${this.props.token}`
             }
         }
         ).then(response1 => {
-            axios.get("https://localhost:5001/api/pages").then(response2 => {
+            axios.get("https://www.adventurouscoding.com/api/pages").then(response2 => {
                 const pages = response2.data.map(page => (decodeURIComponent(page)));
                 this.setState(prevState => ({ ...prevState, pages: pages }));
             }).catch(err => {

@@ -14,7 +14,7 @@ class PageRenderer extends React.PureComponent {
       this.props.updateLayout(this.props.loadedLayout);
     }
     if (this.props.currentPage && !this.state.components.length > 0) {
-      axios.get('https://localhost:5001/api/pages/' + encodeURIComponent(this.props.currentPage)).then(response => {
+      axios.get('https://www.adventurouscoding.com/api/pages/' + encodeURIComponent(this.props.currentPage)).then(response => {
         const page = response.data.content;
         console.log(response.data.layout);
         if (!this.props.loadedLayout)
