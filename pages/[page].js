@@ -30,8 +30,7 @@ export default Page;
 
 
 export async function getServerSideProps({params}) {
-    process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
-    const response = await (await fetch("https://https://www.adventurouscoding.com/api/pages/" + encodeURIComponent('/'+ params.page))).json();
+    const response = await (await fetch("https://www.adventurouscoding.com/api/pages/" + encodeURIComponent('/'+ params.page))).json();
     const page = response.content;
     const layout = response.layout;
     return { props: { pageName: response.path, page, layout } }

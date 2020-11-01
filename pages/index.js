@@ -30,7 +30,6 @@ export default Index;
 
 
 export async function getServerSideProps() {
-    process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
     const response = await (await fetch("https://www.adventurouscoding.com/api/pages/" + encodeURIComponent('/'))).json();
     const page = response.content;
     const layout = response.layout;

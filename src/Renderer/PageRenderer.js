@@ -1,7 +1,6 @@
-import React, { Component, Suspense } from 'react';
+import React from 'react';
 import LeanComponentRender from './LeanComponentRender';
 import axios from 'axios';
-import Spinner from '../components/UI/Spinner/Spinner';
 import Aux from '../hoc/Auxilary';
 class PageRenderer extends React.PureComponent {
 
