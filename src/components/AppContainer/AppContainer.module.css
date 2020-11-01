@@ -1,0 +1,12 @@
+.AppContainer{
+    min-height: 100vh;
+    height:5000px;
+}
+
+
+@media (max-width: 600px) {
+    .AppContainer{
+        margin-left:0;
+        width: 100%;
+    }
+}

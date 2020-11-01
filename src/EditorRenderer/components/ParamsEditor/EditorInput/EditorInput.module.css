@@ -1,0 +1,11 @@
+.Input{
+    width: 96%;
+}
+.Label{
+    display: block;
+    text-transform: capitalize;
+}
+.InputContainer{
+    margin:0 2% 8px 2%;
+}
+

@@ -1,0 +1,31 @@
+.Header{
+    height: 93vh;
+    background-repeat: no-repeat;
+    background-size:cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:0 0 10px 0;
+}
+.Message{
+    backdrop-filter: blur(4px);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color:white;
+}
+.Message h1{
+    font-size:4em;
+}
+
+@media(max-width:1200px){
+    .Message h1{
+        font-size:3em;
+    }
+}
+
+@media(max-width:600px){
+    .Message h1{
+        font-size:2em;
+    }
+}

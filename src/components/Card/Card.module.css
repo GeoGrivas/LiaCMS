@@ -1,0 +1,32 @@
+.Card{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width:100%;
+    padding-bottom:5px ;
+}
+.Card h1{
+    padding: 0 8px 0 8px;
+}
+.Card h2{
+    padding: 0 8px 0 8px;
+}
+.Card h3{
+    padding: 0 8px 0 8px;
+}
+.Card h4{
+    padding: 0 8px 0 8px;
+}
+.Card h5{
+    padding: 0 8px 0 8px;
+}
+.Card h6{
+    padding: 0 8px 0 8px;
+}
+.Card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+.Card p{
+    padding:0px 5px 0px 5px;
+}
+
+

@@ -1,0 +1,9 @@
+.Container{
+    position: absolute;
+    bottom:50px;
+    border:2px solid white;
+    padding:5px;
+}
+.Label{
+    display: block;
+}

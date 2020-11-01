@@ -1,0 +1,13 @@
+.Main {
+    margin-left: 20%; /* Same as the width of the sidebar */
+    padding: 0px 10px;
+    height: 100vh;
+    display: flex;
+  }
+
+  @media (max-width: 600px) {
+    .Main{
+        margin-left:0;
+        width: 100%;
+    }
+}

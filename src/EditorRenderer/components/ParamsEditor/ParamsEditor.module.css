@@ -1,0 +1,46 @@
+.Button{
+    font-size: 16px;
+    padding:5px 10px 5px 10px;
+    border:1px lightgray solid;
+    display: inline;
+    background-color: white;
+    box-sizing: content-box;
+    margin: 1px;
+}
+
+.Remove{
+    background-color: rgb(226, 66, 98);
+    color:white;
+    border:1px coral solid;
+}
+.Remove:hover{
+    background-color: rgb(226, 1, 46);
+}
+.Edit{
+    background-color: rgb(56, 45, 223);
+    color:white;
+    border:1px skyblue solid;
+}
+
+.Edit:hover{
+    background-color: rgb(39, 52, 109);
+}
+
+.Save{
+    background-color: rgb(32, 158, 60);
+    color:white;
+    border:1px rgb(17, 128, 41) solid;
+    float:right;
+}
+.Save:hover{
+    background-color:  rgb(17, 128, 41);
+}
+
+.Close{
+    background-color: lightgray;
+    color:black;
+    border:1px gray solid;
+}
+.Close:hover{
+    background-color: gray;
+}
