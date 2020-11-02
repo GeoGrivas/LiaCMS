@@ -384,7 +384,7 @@ class PageRenderer extends Component {
               <DraggableItem onDragEnd={this.draggingEndedHandler} onDragStart={this.onDragHandler} data={{
                 component: "Image1",
                 importLocation: "/Card/Image1/Image1",
-                params: { src: { value: "https://dummyimage.com/300.png/09f/fff" }, alt: { value: 'an image!' } }
+                params: { src: { value: "https://dummyimage.com/300.png/09f/fff" }, alt: { value: 'an image!' },height:{value:'300px'},width:{value:'300px'} }
               }}>Image1</DraggableItem>
               <hr />
               <DraggableItem onDragEnd={this.draggingEndedHandler} onDragStart={this.onDragHandler} data={{

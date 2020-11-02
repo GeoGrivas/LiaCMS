@@ -6,15 +6,16 @@ import Spinner from '../components/UI/Spinner/Spinner';
 class PageRenderer extends React.PureComponent {
 
   state = {
-    components: []
+    components: this.props.page?this.props.page:[],
+    currentPage:this.props.currentPage
   }
   componentDidMount = () => {
-    if (this.props.page) {
-      console.log('trying to load page');
-      this.loadPage(this.props.page, this.props.currentPage);
-      console.log('page loaded');
-      console.log(this.state.components);
-    }
+   // if (this.props.page) {
+    //  console.log('trying to load page');
+     // this.loadPage(this.props.page, this.props.currentPage);
+     // console.log('page loaded');
+     // console.log(this.state.components);
+    //}
     if (this.props.loadedLayout) {
       this.props.updateLayout(this.props.loadedLayout);
     }

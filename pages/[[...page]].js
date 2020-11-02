@@ -16,7 +16,7 @@ const Page = (props) => {
             </Head>
             {editing?
             (<InitAuthState>
-            <EditingPageRenderer currentPage={decodeURIComponent(props.pageName)} />
+            <EditingPageRenderer currentPage={'/'+currentPage} />
           </InitAuthState>):
             <PageRenderer currentPage={'/'+currentPage}  updateLayout={props.updateLayout} layout={props.layout} loadedLayout={props.layout}  page={props.page} />
         }
