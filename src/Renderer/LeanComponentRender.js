@@ -1,13 +1,16 @@
 import React from "react";
-import dynamic from 'next/dynamic';
+import componentsList from "./componentsList";
 
-const LeanComponentRender = props => {
+export default function LeanComponentRender(props) {
     let component = null;
+    //console.log(componentsList);
     if (props.block.component === "AppContainer") {
-        component = dynamic(() => import('../hoc/Auxilary'));
+        component = componentsList['Auxilary'];
     }
     else
-        component = dynamic(() => import('../components' + props.block.importLocation));
+    {
+        component = componentsList[props.block.component];
+    }
     let children = null;
     if (props.block.children) {
         children = props.block.children.map(comp => {
@@ -21,4 +24,4 @@ const LeanComponentRender = props => {
     );
 }
 
-export default LeanComponentRender;
+//export default LeanComponentRender;
