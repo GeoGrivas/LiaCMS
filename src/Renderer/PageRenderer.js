@@ -6,9 +6,12 @@ import Spinner from '../components/UI/Spinner/Spinner';
 class PageRenderer extends React.Component {
 
   state = {
-    components: this.props.page
+    components:[]
   }
   currentPage=this.props.currentPage;
+  componentDidMount=()=>{
+    this.loadPage(this.props.page, this.props.currentPage);
+  }
   componentDidUpdate = () => {
     console.log('page 2');
     if (this.currentPage && this.props.currentPage !== this.currentPage) {

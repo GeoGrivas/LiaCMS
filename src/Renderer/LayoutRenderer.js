@@ -1,9 +1,16 @@
 import PageRenderer from './PageRenderer';
 class LayoutRenderer extends PageRenderer {
     state = {
-        components: this.props.layout?JSON.parse(this.props.layout.content):[]
+        components:[]
     };
     layoutName = this.props.layout?this.props.layout.name:'';
+    componentDidMount=()=>{
+        if(this.props.layout)
+        {
+            this.layoutName = this.props.layout.name;
+            this.loadPage(JSON.parse(this.props.layout.content));
+        }
+    }
     componentDidUpdate = () => {
         if (this.props.layout && (this.layoutName !== this.props.layout.name)) {
             this.layoutName = this.props.layout.name;
