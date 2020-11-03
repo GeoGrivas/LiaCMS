@@ -10,12 +10,6 @@ class PageRenderer extends React.PureComponent {
     currentPage:this.props.currentPage
   }
   componentDidMount = () => {
-   // if (this.props.page) {
-    //  console.log('trying to load page');
-     // this.loadPage(this.props.page, this.props.currentPage);
-     // console.log('page loaded');
-     // console.log(this.state.components);
-    //}
     if (this.props.loadedLayout) {
       this.props.updateLayout(this.props.loadedLayout);
     }
@@ -24,7 +18,6 @@ class PageRenderer extends React.PureComponent {
     if (this.props.currentPage && this.props.currentPage !== this.state.currentPage) {
       axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(this.props.currentPage)).then(response => {
         const page = response.data.content;
-        console.log(response.data.layout);
         if (!this.props.loadedLayout)
           this.props.updateLayout(response.data.layout);
         this.loadPage(JSON.parse(page), this.props.currentPage);
@@ -36,8 +29,6 @@ class PageRenderer extends React.PureComponent {
   loadPage = (design, currentPage = '') => {
     this.setState(prevState => ({ ...prevState, components: design, currentPage: currentPage }));
   }
-
-
   render() {
     let renderedComponents = <Spinner />;
     if (this.props.currentPage === this.state.currentPage || this.layoutName) {

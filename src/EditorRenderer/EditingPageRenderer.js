@@ -26,7 +26,7 @@ class PageRenderer extends Component {
     this.setState((prevState) => ({ ...prevState, layoutEditing: !prevState.layoutEditing }));
   }
   componentDidMount = () => {
-    this.props.removeLayounpt();
+    this.props.removeLayout();
     if (this.props.isAuthenticated) {
       this.initEmptyPage();
       axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(this.props.currentPage)).then(response => {

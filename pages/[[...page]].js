@@ -16,7 +16,7 @@ const Page = (props) => {
             </Head>
             {editing?
             (<InitAuthState>
-            <EditingPageRenderer removeLayout={()=>{props.updateLayout({name:'',content:[]})}}currentPage={'/'+currentPage} />
+            <EditingPageRenderer removeLayout={()=>{props.updateLayout('remove')}}currentPage={'/'+currentPage} />
           </InitAuthState>):
             <PageRenderer currentPage={'/'+currentPage}  updateLayout={props.updateLayout} layout={props.layout} loadedLayout={props.layout}  page={props.page} />
         }
