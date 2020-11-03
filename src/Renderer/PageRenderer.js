@@ -14,6 +14,7 @@ class PageRenderer extends React.Component {
     if (this.currentPage && this.props.currentPage !== this.currentPage) {
       axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(this.props.currentPage)).then(response => {
         const page = response.data.content;
+        this.currentPage=this.props.currentPage;
         console.log(response.data.layout);
         this.props.updateLayout(response.data.layout);
         this.loadPage(JSON.parse(page), this.props.currentPage);

@@ -7,6 +7,7 @@ import '../src/index.css';
 class MyApp extends App {
    
     render() {
+        console.log('hello from the app!');
         const { Component, pageProps } = this.props;
         const store = configureStore({});
         return <Provider store={store}>
