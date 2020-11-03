@@ -34,8 +34,7 @@ const Page =  (props) => {
             <EditingPageRenderer removeLayout={()=>{updateLayout('remove')}}currentPage={'/'+currentPage} />
           </InitAuthState>):
           <Aux>
-          <LayoutRenderer layout={props.layout} /> 
-            <PageRenderer currentPage={'/'+currentPage}  updateLayout={updateLayout} layout={props.layout} loadedLayout={props.layout}  page={props.page} />
+            <PageRenderer currentPage={'/'+currentPage}  updateLayout={updateLayout} layout={JSON.parse(props.layout.content)} loadedLayout={props.layout}  page={props.page} />
           </Aux>
         }
         </Aux>
