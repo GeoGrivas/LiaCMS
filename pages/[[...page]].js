@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Aux from '../src/hoc/Auxilary';
-import {useState,useEffect} from 'react';
+import {useState,useEffect,useRef} from 'react';
 import PageRenderer from '../src/Renderer/PageRenderer';
 import EditingPageRenderer from '../src/EditorRenderer/EditingPageRenderer';
 import { useRouter } from 'next/router';
@@ -9,6 +9,7 @@ import LayoutRenderer from '../src/Renderer/LayoutRenderer';
 
 const Page = (props) => {
     const router=useRouter();
+    const counter=useRef(0);
     const editing=router.query.hasOwnProperty('edit');
     const currentPage=router.query.page?router.query.page.join('/'):'';
     const {pageState,setPageState}=useState({page:props.page,layout:props.layout});
@@ -20,7 +21,8 @@ const Page = (props) => {
         }
     };
     useEffect(()=>{
-        console.log("rendering!");
+        counter.current=counter.current+1;
+        console.log("rendering!"+counter.current);
     });
     return (
         <Aux>
