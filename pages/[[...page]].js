@@ -1,13 +1,29 @@
 import Head from 'next/head';
 import Aux from '../src/hoc/Auxilary';
+import {useState,useEffect,useRef} from 'react';
 import PageRenderer from '../src/Renderer/PageRenderer';
 import EditingPageRenderer from '../src/EditorRenderer/EditingPageRenderer';
 import { useRouter } from 'next/router';
 import InitAuthState from '../src/components/Authentication/InitAuthState';
-const Page = (props) => {
+import LayoutRenderer from '../src/Renderer/LayoutRenderer';
+
+const Page =  React.memo((props) => {
     const router=useRouter();
+    const counter=useRef(0);
     const editing=router.query.hasOwnProperty('edit');
     const currentPage=router.query.page?router.query.page.join('/'):'';
+    const [pageState,setPageState]=useState({page:props.page,layout:props.layout});
+    const updateLayout = (nextLayout) => {
+        if (nextLayout === 'remove') {
+           // setPageState({...pageState,layout:null});
+        } else if ((!pageState.layout && nextLayout) || (nextLayout.name !== pageState.layout.name)) {
+           // setPageState({...pageState, layout: nextLayout });
+        }
+    };
+    useEffect(()=>{
+        counter.current=counter.current+1;
+        console.log("rendering!"+counter.current);
+    });
     return (
         <Aux>
             <Head>
@@ -16,13 +32,15 @@ const Page = (props) => {
             </Head>
             {editing?
             (<InitAuthState>
-            <EditingPageRenderer removeLayout={()=>{props.updateLayout('remove')}}currentPage={'/'+currentPage} />
+            <EditingPageRenderer removeLayout={()=>{updateLayout('remove')}}currentPage={'/'+currentPage} />
           </InitAuthState>):
-            <PageRenderer currentPage={'/'+currentPage}  updateLayout={props.updateLayout} layout={props.layout} loadedLayout={props.layout}  page={props.page} />
+          <Aux>
+            <PageRenderer currentPage={'/'+currentPage}  updateLayout={updateLayout} layout={props.layout} loadedLayout={props.layout}  page={props.page} />
+          </Aux>
         }
         </Aux>
     )
-}
+});
 
 export default Page;
 
