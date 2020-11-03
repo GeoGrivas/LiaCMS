@@ -9,9 +9,21 @@ import LayoutRenderer from '../src/Renderer/LayoutRenderer';
 
 const Page =  React.memo((props) => {
     const router=useRouter();
+    const counter=useRef(0);
     const editing=router.query.hasOwnProperty('edit');
     const currentPage=router.query.page?router.query.page.join('/'):'';
-   
+    const [pageState,setPageState]=useState({page:props.page,layout:props.layout});
+    const updateLayout = (nextLayout) => {
+        if (nextLayout === 'remove') {
+           // setPageState({...pageState,layout:null});
+        } else if ((!pageState.layout && nextLayout) || (nextLayout.name !== pageState.layout.name)) {
+           // setPageState({...pageState, layout: nextLayout });
+        }
+    };
+    useEffect(()=>{
+        counter.current=counter.current+1;
+        console.log("rendering!"+counter.current);
+    });
     return (
         <Aux>
             <Head>
@@ -20,10 +32,10 @@ const Page =  React.memo((props) => {
             </Head>
             {editing?
             (<InitAuthState>
-            <EditingPageRenderer currentPage={'/'+currentPage} />
+            <EditingPageRenderer removeLayout={()=>{updateLayout('remove')}}currentPage={'/'+currentPage} />
           </InitAuthState>):
           <Aux>
-            <PageRenderer currentPage={'/'+currentPage}   page={props.page} />
+            <PageRenderer currentPage={'/'+currentPage}  updateLayout={updateLayout} layout={props.layout} loadedLayout={props.layout}  page={props.page} />
           </Aux>
         }
         </Aux>
