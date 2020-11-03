@@ -16,7 +16,7 @@ const Page = (props) => {
             </Head>
             {editing?
             (<InitAuthState>
-            <EditingPageRenderer currentPage={'/'+currentPage} />
+            <EditingPageRenderer removeLayout={()=>{props.updateLayout({name:'',content:[]})}}currentPage={'/'+currentPage} />
           </InitAuthState>):
             <PageRenderer currentPage={'/'+currentPage}  updateLayout={props.updateLayout} layout={props.layout} loadedLayout={props.layout}  page={props.page} />
         }
@@ -37,10 +37,8 @@ export async function getStaticPaths(){
 
 export async function getStaticProps({params}) {
     let route=params.page?params.page:'';
-    console.log(route);
     const response = await (await fetch("https://api.adventurouscoding.com/api/pages/" + encodeURIComponent('/'+ route))).json();
     const page = response.content;
-    console.log(page);
     const layout = response.layout;
     return { props: { pageName: route, page:JSON.parse(page), layout, },revalidate:60 }
 }
