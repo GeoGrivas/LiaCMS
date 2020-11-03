@@ -21,10 +21,6 @@ const Page =  (props) => {
             setPageState({...pageState, layout: nextLayout });
         }
     };
-    useEffect(()=>{
-        counter.current=counter.current+1;
-        console.log("rendering!"+counter.current);
-    });
 
     return (
         <Aux>

@@ -22,10 +22,6 @@ class PageRenderer extends React.Component {
       });
     }
   }
-  shouldComponentUpdate=()=>{
-    console.log('should')
-    return true;
-  }
   loadPage = (design, currentPage = '') => {
     this.setState(prevState => ({ ...prevState, components: design, currentPage: currentPage }));
   }
