@@ -9,10 +9,15 @@ class PageRenderer extends React.PureComponent {
     components: this.props.page?this.props.page:[],
     currentPage:this.props.currentPage
   }
+  componentDidMount=()=>{
+    console.log('page 1')
+  }
   componentDidUpdate = () => {
     if (this.props.currentPage && this.props.currentPage !== this.state.currentPage) {
       axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(this.props.currentPage)).then(response => {
         const page = response.data.content;
+        
+        console.log('page2');
         if (!this.props.loadedLayout)
           this.props.updateLayout(response.data.layout);
         this.loadPage(JSON.parse(page), this.props.currentPage);

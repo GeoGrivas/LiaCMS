@@ -16,9 +16,12 @@ const Page = (props) => {
         if (nextLayout === 'remove') {
             setPageState({...pageState,layout:null});
         } else if ((!pageState.layout && nextLayout) || (nextLayout.name !== pageState.layout.name)) {
-            setPageState({...pageState,layout:layout});
+            setPageState({...pageState, layout: nextLayout });
         }
     };
+    useEffect(()=>{
+
+    });
     return (
         <Aux>
             <Head>
