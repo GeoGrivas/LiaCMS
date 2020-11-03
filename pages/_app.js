@@ -17,8 +17,6 @@ class MyApp extends App {
         const { Component, pageProps } = this.props;
         const store = configureStore({});
         return <Provider store={store}>
-            {this.state.layout !== null ?
-                <LayoutRenderer layout={this.state.layout} /> : null}
             <Component {...pageProps} updateLayout={this.updateLayout} />
         </Provider>;
     }

@@ -4,6 +4,8 @@ import PageRenderer from '../src/Renderer/PageRenderer';
 import EditingPageRenderer from '../src/EditorRenderer/EditingPageRenderer';
 import { useRouter } from 'next/router';
 import InitAuthState from '../src/components/Authentication/InitAuthState';
+import LayoutRenderer from '../src/Renderer/LayoutRenderer';
+
 const Page = (props) => {
     const router=useRouter();
     const editing=router.query.hasOwnProperty('edit');
@@ -18,7 +20,10 @@ const Page = (props) => {
             (<InitAuthState>
             <EditingPageRenderer removeLayout={()=>{props.updateLayout('remove')}}currentPage={'/'+currentPage} />
           </InitAuthState>):
+          <Aux>
+          <LayoutRenderer layout={props.layout} /> 
             <PageRenderer currentPage={'/'+currentPage}  updateLayout={props.updateLayout} layout={props.layout} loadedLayout={props.layout}  page={props.page} />
+          </Aux>
         }
         </Aux>
     )
