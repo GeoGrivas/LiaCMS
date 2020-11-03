@@ -7,12 +7,12 @@ import { useRouter } from 'next/router';
 import InitAuthState from '../src/components/Authentication/InitAuthState';
 import LayoutRenderer from '../src/Renderer/LayoutRenderer';
 
-const Page = (props) => {
+const Page =  React.memo((props) => {
     const router=useRouter();
     const counter=useRef(0);
     const editing=router.query.hasOwnProperty('edit');
     const currentPage=router.query.page?router.query.page.join('/'):'';
-    const {pageState,setPageState}=useState({page:props.page,layout:props.layout});
+    const [pageState,setPageState]=useState({page:props.page,layout:props.layout});
     const updateLayout = (nextLayout) => {
         if (nextLayout === 'remove') {
             setPageState({...pageState,layout:null});
@@ -41,7 +41,7 @@ const Page = (props) => {
         }
         </Aux>
     )
-}
+});
 
 export default Page;
 
