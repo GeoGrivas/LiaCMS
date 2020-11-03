@@ -20,7 +20,7 @@ const Page = (props) => {
         }
     };
     useEffect(()=>{
-
+        console.log("rendering!");
     });
     return (
         <Aux>
