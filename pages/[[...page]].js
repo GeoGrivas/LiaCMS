@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import InitAuthState from '../src/components/Authentication/InitAuthState';
 import LayoutRenderer from '../src/Renderer/LayoutRenderer';
 
-const Page =  React.memo((props) => {
+const Page =  (props) => {
     const router=useRouter();
     const counter=useRef(0);
     const editing=router.query.hasOwnProperty('edit');
@@ -25,12 +25,14 @@ const Page =  React.memo((props) => {
         counter.current=counter.current+1;
         console.log("rendering!"+counter.current);
     });
+
     return (
         <Aux>
             <Head>
                 <title>{props.pageName}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            {console.log('we;re rendering')}
             {editing?
             (<InitAuthState>
             <EditingPageRenderer removeLayout={()=>{updateLayout('remove')}}currentPage={'/'+currentPage} />
@@ -42,7 +44,7 @@ const Page =  React.memo((props) => {
         }
         </Aux>
     )
-});
+};
 
 export default Page;
 
