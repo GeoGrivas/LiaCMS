@@ -15,9 +15,9 @@ const Page =  React.memo((props) => {
     const [pageState,setPageState]=useState({page:props.page,layout:props.layout});
     const updateLayout = (nextLayout) => {
         if (nextLayout === 'remove') {
-            setPageState({...pageState,layout:null});
+           // setPageState({...pageState,layout:null});
         } else if ((!pageState.layout && nextLayout) || (nextLayout.name !== pageState.layout.name)) {
-            setPageState({...pageState, layout: nextLayout });
+           // setPageState({...pageState, layout: nextLayout });
         }
     };
     useEffect(()=>{
@@ -35,7 +35,6 @@ const Page =  React.memo((props) => {
             <EditingPageRenderer removeLayout={()=>{updateLayout('remove')}}currentPage={'/'+currentPage} />
           </InitAuthState>):
           <Aux>
-          <LayoutRenderer layout={props.layout} /> 
             <PageRenderer currentPage={'/'+currentPage}  updateLayout={updateLayout} layout={props.layout} loadedLayout={props.layout}  page={props.page} />
           </Aux>
         }
