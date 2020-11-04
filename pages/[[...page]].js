@@ -1,26 +1,32 @@
 import Head from 'next/head';
 import Aux from '../src/hoc/Auxilary';
-import { useState, useEffect, useRef, Component } from 'react';
-import PageRenderer from '../src/Renderer/PageRenderer';
+import { useState, useEffect, useRef } from 'react';
 import EditingPageRenderer from '../src/EditorRenderer/EditingPageRenderer';
 import { useRouter } from 'next/router';
 import InitAuthState from '../src/components/Authentication/InitAuthState';
-import LayoutRenderer from '../src/Renderer/LayoutRenderer';
 import componentsList from '../src/Renderer/componentsList';
+import axios from 'axios';
 const Page = (props) => {
     const router = useRouter();
-    const counter = useRef(0);
+    const isUpdate = useRef(false);
     const editing = router.query.hasOwnProperty('edit');
-    const currentPage = router.query.page ? router.query.page.join('/') : '';
-    const [pageState, setPageState] = useState({ page: props.page, layout: props.layout });
-    console.log('page rendering')
-    const updateLayout = (nextLayout) => {
-        if (nextLayout === 'remove') {
-            setPageState({ ...pageState, layout: null });
-        } else if ((!pageState.layout && nextLayout) || (nextLayout.name !== pageState.layout.name)) {
-            setPageState({ ...pageState, layout: nextLayout });
-        }
-    };
+    const currentPage = '/'+(router.query.page ? router.query.page.join('/') : '');
+    const [pageState, setPageState] = useState({ page: props.page, layout: props.layout,currentPage:currentPage });
+
+
+    useEffect(()=>{
+        if(isUpdate.current)
+        {
+            if (pageState.currentPage !== currentPage) {
+                console.log(pageState.currentPage,currentPage);
+                axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(currentPage)).then(response => {
+                  setPageState({page:JSON.parse(response.data.content),layout:response.data.layout.content,currentPage:currentPage});
+                   }).catch(err => {
+                  console.log("error" + err);
+                });
+              }
+        }else isUpdate.current=true;
+    });
     const LeanComponentRender = (block, idAdd) => {
         let Component = null;
         if (block.component === "AppContainer") {
@@ -55,9 +61,15 @@ const Page = (props) => {
                 <title>{props.pageName}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            {layout}
-            {render}
-
+            {editing?
+            (<InitAuthState>
+            <EditingPageRenderer currentPage={'/'+currentPage} />
+          </InitAuthState>):
+          <Aux>
+              {layout}
+              {render}
+          </Aux>
+            }
         </Aux>
     )
 };

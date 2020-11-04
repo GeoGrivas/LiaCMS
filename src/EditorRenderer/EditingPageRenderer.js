@@ -26,23 +26,17 @@ class PageRenderer extends Component {
     this.setState((prevState) => ({ ...prevState, layoutEditing: !prevState.layoutEditing }));
   }
   componentDidMount = () => {
-    this.props.removeLayout();
     if (this.props.isAuthenticated) {
       this.initEmptyPage();
       axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(this.props.currentPage)).then(response => {
         const page = response.data.content;
         const layout = response.data.layout.content;
         const layoutName = response.data.layoutName;
-        console.log(response.data);
         if (page) {
           this.loadPage(JSON.parse(page));
           this.setState(prevState => ({ ...prevState, layoutComponents: JSON.parse(layout), selectedLayout: layoutName,loading:false}));
         }
-        else {
-          this.initEmptyPage();
-        }
       }).catch(err => {
-        this.initEmptyPage();
         console.log("error" + err);
       });
     } else {
