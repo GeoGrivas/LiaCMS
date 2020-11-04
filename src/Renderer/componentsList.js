@@ -1,22 +1,22 @@
 import dynamic from 'next/dynamic';
 const componentsList={
-    Paragraph:dynamic(()=>import ('../components/Paragraph/Paragraph')),
-    Auxilary:dynamic(()=>import('../hoc/Auxilary')),
-    AppContainer:dynamic(()=>import('../components/AppContainer/AppContainer')),
-    Authentication:dynamic(()=>import('../components/Authentication/Authentication')),
-    InitAuthState:dynamic(()=>import('../components/Authentication/InitAuthState')),
-    ButtonLink:dynamic(()=>import('../components/ButtonLink/ButtonLink')),
-    Card:dynamic(()=>import('../components/Card/Card')),
-    Container:dynamic(()=>import('../components/Container/Container')),
-    Header:dynamic(()=>import('../components/Header/Header')),
-    Heading:dynamic(()=>import('../components/Heading/Heading')),
-    List:dynamic(()=>import('../components/List/List')),
-    ListItem:dynamic(()=>import('../components/List/ListItem/ListItem')),
-    ResponsiveNavigation:dynamic(()=>import('../components/Navigation/ResponsiveNavigation')),
-    NavigationItem:dynamic(()=>import('../components/Navigation/NavigationItems/NavigationItem/NavigationItem')),
-    Row:dynamic(()=>import('../components/Row/Row')),
-    Column:dynamic(()=>import('../components/Column/Column')),
-    Image1:dynamic(()=>import('../components/Card/Image1/Image1'))
+    Paragraph:dynamic(()=>import ('../components/Paragraph/Paragraph'),{ssr:true}),
+    Auxilary:dynamic(()=>import('../hoc/Auxilary'),{ssr:true}),
+    AppContainer:dynamic(()=>import('../components/AppContainer/AppContainer'),{ssr:true}),
+    Authentication:dynamic(()=>import('../components/Authentication/Authentication'),{ssr:true}),
+    InitAuthState:dynamic(()=>import('../components/Authentication/InitAuthState'),{ssr:true}),
+    ButtonLink:dynamic(()=>import('../components/ButtonLink/ButtonLink'),{ssr:true}),
+    Card:dynamic(()=>import('../components/Card/Card'),{ssr:true}),
+    Container:dynamic(()=>import('../components/Container/Container'),{ssr:true}),
+    Header:dynamic(()=>import('../components/Header/Header'),{ssr:true}),
+    Heading:dynamic(()=>import('../components/Heading/Heading'),{ssr:true}),
+    List:dynamic(()=>import('../components/List/List'),{ssr:true}),
+    ListItem:dynamic(()=>import('../components/List/ListItem/ListItem'),{ssr:true}),
+    ResponsiveNavigation:dynamic(()=>import('../components/Navigation/ResponsiveNavigation'),{ssr:true}),
+    NavigationItem:dynamic(()=>import('../components/Navigation/NavigationItems/NavigationItem/NavigationItem'),{ssr:true}),
+    Row:dynamic(()=>import('../components/Row/Row'),{ssr:true}),
+    Column:dynamic(()=>import('../components/Column/Column'),{ssr:true}),
+    Image1:dynamic(()=>import('../components/Card/Image1/Image1'),{ssr:true})
 };
 
 

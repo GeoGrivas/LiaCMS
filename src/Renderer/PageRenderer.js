@@ -25,7 +25,7 @@ class PageRenderer extends React.Component {
       });
     }
   }
-  loadPage = (design, currentPage = '',layout) => {
+  loadPage = (design, currentPage,layout) => {
     this.setState(prevState => ({ ...prevState, components: design, currentPage: currentPage,layout:JSON.parse(layout.content) }));
   }
   render() {
@@ -41,10 +41,10 @@ class PageRenderer extends React.Component {
       return <LeanComponentRender key={block.id + 's'} block={block} />;
     });
     return (
-      <Aux>
+      <div>
         {layout}
         {renderedComponents}
-      </Aux>
+      </div>
 
     );
   }
