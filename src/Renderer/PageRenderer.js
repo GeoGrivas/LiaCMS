@@ -1,7 +1,6 @@
 import React from 'react';
 import LeanComponentRender from './LeanComponentRender';
 import axios from 'axios';
-import Aux from '../hoc/Auxilary';
 import Spinner from '../components/UI/Spinner/Spinner';
 class PageRenderer extends React.Component {
 

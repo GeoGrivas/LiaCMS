@@ -10,22 +10,32 @@ const Page = (props) => {
     const router = useRouter();
     const isUpdate = useRef(false);
     const editing = router.query.hasOwnProperty('edit');
-    const currentPage = '/'+(router.query.page ? router.query.page.join('/') : '');
-    const [pageState, setPageState] = useState({ page: props.page, layout: props.layout,currentPage:currentPage });
-
-
-    useEffect(()=>{
-        if(isUpdate.current)
+    const currentPage = '/' + (router.query.page ? router.query.page.join('/') : '');
+    const [pageState, setPageState] = useState(
         {
+            page: props.page,
+            layout: props.layout,
+            currentPage: currentPage,
+            title: props.title
+        });
+
+
+    useEffect(() => {
+        if (isUpdate.current) {
             if (pageState.currentPage !== currentPage) {
-                console.log(pageState.currentPage,currentPage);
                 axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(currentPage)).then(response => {
-                  setPageState({page:JSON.parse(response.data.content),layout:response.data.layout.content,currentPage:currentPage});
-                   }).catch(err => {
-                  console.log("error" + err);
+                    setPageState(
+                        {
+                            page: JSON.parse(response.data.content),
+                            layout: JSON.parse(response.data.layout.content),
+                            currentPage: currentPage,
+                            title: response.data.title
+                        });
+                }).catch(err => {
+                    console.log("error" + err);
                 });
-              }
-        }else isUpdate.current=true;
+            }
+        } else isUpdate.current = true;
     });
     const LeanComponentRender = (block, idAdd) => {
         let Component = null;
@@ -54,21 +64,21 @@ const Page = (props) => {
         }
     }
     const render = LeanComponentRender(props.page[0], 'p');
-    const layout = LeanComponentRender(JSON.parse(props.layout.content)[0], 'l');
+    const layout = LeanComponentRender(props.layout[0], 'l');
     return (
         <Aux>
             <Head>
                 <title>{props.pageName}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            {editing?
-            (<InitAuthState>
-            <EditingPageRenderer currentPage={'/'+currentPage} />
-          </InitAuthState>):
-          <Aux>
-              {layout}
-              {render}
-          </Aux>
+            {editing ?
+                (<InitAuthState>
+                    <EditingPageRenderer currentPage={ currentPage} />
+                </InitAuthState>) :
+                <Aux>
+                    {layout}
+                    {render}
+                </Aux>
             }
         </Aux>
     )
@@ -90,5 +100,6 @@ export async function getStaticProps({ params }) {
     const response = await (await fetch("https://api.adventurouscoding.com/api/pages/" + encodeURIComponent('/' + route))).json();
     const page = response.content;
     const layout = response.layout;
-    return { props: { pageName: route, page: JSON.parse(page), layout, }, revalidate: 60 }
+    const title = response.title;
+    return { props: { pageName: route, page: JSON.parse(page),layout: JSON.parse(layout.content),title }, revalidate: 60 }
 }

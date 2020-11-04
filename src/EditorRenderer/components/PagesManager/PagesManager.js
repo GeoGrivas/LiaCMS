@@ -64,7 +64,16 @@ class PagesManager extends Component {
         });
     }
     savePageHandler = () => {
-        axios.put('https://api.adventurouscoding.com/api/pages/put', { path: encodeURIComponent(this.state.currentPage), content: JSON.stringify(this.props.design), layoutName: this.state.selectedLayout }, {
+        console.log(this.props.title)
+        axios.put('https://api.adventurouscoding.com/api/pages/put', { 
+            path: encodeURIComponent(this.state.currentPage),
+             content: JSON.stringify(this.props.design),
+              layoutName: this.state.selectedLayout, 
+            title:this.props.title,
+            description:this.props.description,
+            type:this.props.type,
+            image:this.props.image
+            }, {
             headers: {
                 'Authorization': `Bearer ${this.props.token}`
             },

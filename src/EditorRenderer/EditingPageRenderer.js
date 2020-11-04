@@ -13,17 +13,26 @@ import LayoutsManager from './components/LayoutsManager/LayoutsManager';
 import LeanComponentRender from '../Renderer/LeanComponentRender';
 import EditorLogin from './components/EditorLogin/EditorLogin';
 import Spinner from '../components/UI/Spinner/Spinner';
-class PageRenderer extends Component {
+import Modal from '../components/UI/Modal/Modal';
+import SeoEditor from './components/SeoEditor/SeoEditor';
+class PageRenderer extends React.PureComponent {
 
   state = {
     components: [],
     layoutComponents: [],
     layoutEditing: false,
     selectedLayout: '',
-    loading:true
+    loading: true
   }
+  showSeoModal = false;
+  draggingComponent = null;
+  eventsEnabled = true;
+  dragging = false;
   switchEditingMode = () => {
     this.setState((prevState) => ({ ...prevState, layoutEditing: !prevState.layoutEditing }));
+  }
+  toggleSeoModal = () => {
+    this.setState((prevState) => ({ showSeoModal: !prevState.showSeoModal }));
   }
   componentDidMount = () => {
     if (this.props.isAuthenticated) {
@@ -34,21 +43,24 @@ class PageRenderer extends Component {
         const layoutName = response.data.layoutName;
         if (page) {
           this.loadPage(JSON.parse(page));
-          this.setState(prevState => ({ ...prevState, layoutComponents: JSON.parse(layout), selectedLayout: layoutName,loading:false}));
+          this.setState(prevState => ({ ...prevState,
+             layoutComponents: JSON.parse(layout), 
+             selectedLayout: layoutName, 
+             loading: false ,
+             title:response.data.title,
+             image:response.data.image,
+             type:response.data.type,
+             description:response.data.description
+            }));
         }
       }).catch(err => {
         console.log("error" + err);
       });
     } else {
       this.props.onTryAutoSignup();
-      this.setState(prevState => ({ ...prevState,loading:false}));
-    }  
-
-    
+      this.setState(prevState => ({ ...prevState, loading: false }));
+    }
   }
-  draggingComponent = null;
-  eventsEnabled = true;
-  dragging = false;
 
   initEmptyPage = () => {
     this.setState(prevState => {
@@ -67,6 +79,7 @@ class PageRenderer extends Component {
       }
     });
   }
+
   cleanCanvas = () => {
     this.setState(prevState => {
       return {
@@ -85,6 +98,7 @@ class PageRenderer extends Component {
       }
     });
   }
+
   getParent = (components, child) => {
     for (let i in components) {
       if (Array.isArray(components[i].children) && components[i].children.filter(chld => (chld.id === child.id)).length > 0) {
@@ -97,6 +111,9 @@ class PageRenderer extends Component {
         }
       }
     }
+  }
+  onSaveSeo = (properties) => {
+    this.setState((prevState) => ({ ...prevState, ...properties }));
   }
   getCopy = (components, child) => {
     let foundComp = components.filter(chld => (chld.id === child.id));
@@ -293,12 +310,11 @@ class PageRenderer extends Component {
       return <ComponentRender key={block.id + 's'} block={block} methods={this.methods} />;
     });
 
-    if(this.state.loading){
-      return <Spinner/>
+    if (this.state.loading) {
+      return <Spinner />
     }
-    if(!this.props.isAuthenticated)
-    {
-      return <EditorLogin/>
+    if (!this.props.isAuthenticated) {
+      return <EditorLogin />
     }
     return (
       <Aux>
@@ -379,7 +395,7 @@ class PageRenderer extends Component {
               <DraggableItem onDragEnd={this.draggingEndedHandler} onDragStart={this.onDragHandler} data={{
                 component: "Image1",
                 importLocation: "/Card/Image1/Image1",
-                params: { src: { value: "https://dummyimage.com/300.png/09f/fff" }, alt: { value: 'an image!' },height:{value:'300px'},width:{value:'300px'} }
+                params: { src: { value: "https://dummyimage.com/300.png/09f/fff" }, alt: { value: 'an image!' }, height: { value: '300px' }, width: { value: '300px' } }
               }}>Image1</DraggableItem>
               <hr />
               <DraggableItem onDragEnd={this.draggingEndedHandler} onDragStart={this.onDragHandler} data={{
@@ -412,13 +428,27 @@ class PageRenderer extends Component {
 
             </SidebarItem>
             <button onClick={this.switchEditingMode}>Switch editing mode</button>
+            <button onClick={this.toggleSeoModal}>Edit SEO properties</button>
             <SidebarItem>
               {this.state.layoutEditing
                 ? <LayoutsManager cleanCanvas={this.cleanCanvas} loadPage={this.loadPage} design={this.state.components} currentDesign={this.state.components} currentPage={this.props.currentPage} /> :
-                <PagesManager selectedLayout={this.state.selectedLayout} drawLayout={this.drawLayout} loadLayout={this.loadLayout} loadPage={this.loadPage} design={this.state.components} currentDesign={this.state.components} currentPage={this.props.currentPage} />
+                <PagesManager
+                  selectedLayout={this.state.selectedLayout}
+                  drawLayout={this.drawLayout}
+                  loadLayout={this.loadLayout}
+                  loadPage={this.loadPage}
+                  design={this.state.components}
+                  currentDesign={this.state.components}
+                  currentPage={this.props.currentPage}
+                  title={this.state.title}
+                  image={this.state.image}
+                  description={this.state.description}
+                  type={this.state.type}
+                />
               }
             </SidebarItem>
           </Sidebar>
+
           <div style={{ marginLeft: '20%', width: '80%' }}>
 
             {layoutRenderedComponents}
@@ -427,7 +457,9 @@ class PageRenderer extends Component {
           </div>
 
         </div>
-
+        <Modal show={this.state.showSeoModal} modalClosed={this.toggleSeoModal}>
+          <SeoEditor title={this.state.title} image={this.state.image} description={this.state.description} type={this.state.type} onSave={this.onSaveSeo} />
+        </Modal>
       </Aux>
     );
   }
