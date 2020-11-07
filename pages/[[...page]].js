@@ -97,7 +97,6 @@ export async function getStaticPaths() {
         fallback: true
     }
 }
-
 export async function getStaticProps({ params }) {
     let route = params.page ? params.page : '';
     const response = await (await fetch("https://api.adventurouscoding.com/api/pages/" + encodeURIComponent('/' + route))).json();
