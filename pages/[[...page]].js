@@ -37,7 +37,7 @@ const Page = (props) => {
             }
         } else isUpdate.current = true;
     });
-    const LeanComponentRender = (block, idAdd,content) => {
+    const LeanComponentRender = (block, idAdd) => {
         let Component = null;
         if (block.component === "AppContainer") {
             Component = React.Fragment;
