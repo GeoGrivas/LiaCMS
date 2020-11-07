@@ -41,11 +41,12 @@ const Page = (props) => {
         let Component = null;
         if (block.component === "AppContainer") {
             Component = React.Fragment;
-        } 
+        }
         else {
             if (block.component === "Content") {
                 //console.log(props.page[0].children);
-                block.children = pageState.page[0].children;
+                if (pageState.page)
+                    block.children = pageState.page[0].children;
             }
             Component = componentsList[block.component];
         }
@@ -68,7 +69,7 @@ const Page = (props) => {
         }
     }
     //const render = LeanComponentRender(props.page[0], 'p');
-    const page = LeanComponentRender(props.layout[0], 'l',props.page[0].children);
+    const page = LeanComponentRender(pageState.layout[0]?pageState.layout[0]:[], 'l');
     return (
         <Aux>
             <Head>
@@ -94,7 +95,7 @@ export async function getStaticPaths() {
     const paths = response.map(path => ({ params: { page: (decodeURIComponent(path).substring(1).split('/')) }, }));
     return {
         paths,
-        fallback: true
+        fallback: false
     }
 }
 export async function getStaticProps({ params }) {
