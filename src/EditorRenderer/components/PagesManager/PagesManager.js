@@ -41,7 +41,7 @@ class PagesManager extends Component {
             const page = response.data.content;
             const layout = response.data.layout.content;
             const layoutName=response.data.layoutName;
-            this.props.loadPage(JSON.parse(page));
+            this.props.loadPage(JSON.parse(page),{title:response.data.title,image:response.data.image,type:response.data.type,description:response.data.description});
             this.setState(prevState => ({ ...prevState, currentLayout: layoutName, selectedLayout: layoutName }));
             this.props.drawLayout(layout);
         }).catch(err => {

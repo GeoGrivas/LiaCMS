@@ -16,7 +16,8 @@ const componentsList={
     NavigationItem:dynamic(()=>import('../components/Navigation/NavigationItems/NavigationItem/NavigationItem'),{ssr:true}),
     Row:dynamic(()=>import('../components/Row/Row'),{ssr:true}),
     Column:dynamic(()=>import('../components/Column/Column'),{ssr:true}),
-    Image1:dynamic(()=>import('../components/Card/Image1/Image1'),{ssr:true})
+    Image1:dynamic(()=>import('../components/Card/Image1/Image1'),{ssr:true}),
+    Content:dynamic(()=>import('../components/Content/Content'))
 };
 
 

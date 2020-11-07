@@ -1,8 +1,7 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component } from 'react';
 import Sidebar from './components/Layout/Sidebar/Sidebar';
 import SidebarItem from './components/Layout/Sidebar/SidebarItem/SidebarItem';
 import DraggableItem from './components/DraggableItem/DraggableItem';
-import cloneDeep from 'lodash.clonedeep';
 import ComponentRender from './Component';
 import { connect } from 'react-redux';
 import * as actions from '../components/Authentication/store/actions/index';
@@ -15,14 +14,19 @@ import EditorLogin from './components/EditorLogin/EditorLogin';
 import Spinner from '../components/UI/Spinner/Spinner';
 import Modal from '../components/UI/Modal/Modal';
 import SeoEditor from './components/SeoEditor/SeoEditor';
-class PageRenderer extends React.PureComponent {
+import { toggleBordersOfComponents, DraggingStarted, removeComponent, saveComponentEdit } from './Logic/EditingLogic';
+class PageRenderer extends Component {
 
   state = {
     components: [],
     layoutComponents: [],
     layoutEditing: false,
     selectedLayout: '',
-    loading: true
+    loading: true,
+    title: '',
+    description: '',
+    type: '',
+    image: ''
   }
   showSeoModal = false;
   draggingComponent = null;
@@ -42,16 +46,18 @@ class PageRenderer extends React.PureComponent {
         const layout = response.data.layout.content;
         const layoutName = response.data.layoutName;
         if (page) {
-          this.loadPage(JSON.parse(page));
-          this.setState(prevState => ({ ...prevState,
-             layoutComponents: JSON.parse(layout), 
-             selectedLayout: layoutName, 
-             loading: false ,
-             title:response.data.title,
-             image:response.data.image,
-             type:response.data.type,
-             description:response.data.description
-            }));
+          //this.loadPage(JSON.parse(page));
+          this.setState(prevState => ({
+            ...prevState,
+            components: JSON.parse(page),
+            layoutComponents: JSON.parse(layout),
+            selectedLayout: layoutName,
+            loading: false,
+            title: response.data.title,
+            image: response.data.image,
+            type: response.data.type,
+            description: response.data.description
+          }));
         }
       }).catch(err => {
         console.log("error" + err);
@@ -61,6 +67,7 @@ class PageRenderer extends React.PureComponent {
       this.setState(prevState => ({ ...prevState, loading: false }));
     }
   }
+
 
   initEmptyPage = () => {
     this.setState(prevState => {
@@ -99,166 +106,45 @@ class PageRenderer extends React.PureComponent {
     });
   }
 
-  getParent = (components, child) => {
-    for (let i in components) {
-      if (Array.isArray(components[i].children) && components[i].children.filter(chld => (chld.id === child.id)).length > 0) {
-        return components[i];
-      } else {
-        if (components[i].children) {
-          let res = this.getParent(components[i].children, child);
-          if (res)
-            return res;
-        }
-      }
-    }
-  }
+
   onSaveSeo = (properties) => {
     this.setState((prevState) => ({ ...prevState, ...properties }));
   }
-  getCopy = (components, child) => {
-    let foundComp = components.filter(chld => (chld.id === child.id));
-    if (foundComp.length > 0) {
-      return foundComp[0];
-    } else {
-      for (let i in components) {
-        if (components[i].type === 'container') {
-          let x = this.getCopy(components[i].children, child);
-          if (x)
-            return x;
-        }
-      }
-    }
-  }
-  addBordersToComponents = () => {
-    let editors = document.getElementsByClassName('editorContainer');
-    for (let i = 0; i < editors.length; i++) {
-      if (editors[i].childNodes.length > 2) {
-        editors[i].childNodes[editors[i].childNodes.length - 1].classList.add('border');
-      }
-    }
-  }
-  removeBordersFromComponents = () => {
-    let editors = document.getElementsByClassName('editorContainer');
-    for (let i = 0; i < editors.length; i++) {
-      if (editors[i].childNodes.length > 2) {
-        editors[i].childNodes[editors[i].childNodes.length - 1].classList.remove('border');
-      }
-    }
-  }
+
+
 
   onDragOver = (event, component) => {
     event.preventDefault();
     event.stopPropagation();
-    let x = event.clientX;
-    let y = event.clientY;
     const isShiftPressed = event.shiftKey;
-    const coords = event.target.getBoundingClientRect();
-    if (!this.dragging) {
-      this.removeBordersFromComponents();
-    } else {
-      this.addBordersToComponents();
-    }
-    if (this.eventsEnabled) {
-      if (x > coords.left + (coords.width * 0.01) && x < coords.right - (coords.width * 0.01) && y > coords.top + (coords.height * 0.01) && y < coords.bottom - (coords.height * 0.01)) {
-        setTimeout(() => {
-          this.eventsEnabled = true;
-        }, 250);
-        this.eventsEnabled = false;
-        let newComponents = cloneDeep(this.state.components);
-        component = this.getCopy(newComponents, component);
-        const componentParent = this.getParent(newComponents, component);
-        if (!component || !this.draggingComponent)
-          return;
-        let draggingParent = this.getParent(newComponents, this.draggingComponent);
-        if (draggingParent) {
-          this.draggingComponent = this.getCopy(draggingParent.children, this.draggingComponent);
-          if (component.id === draggingParent.id || (componentParent && componentParent.id === this.draggingComponent.id)) {
-            return;
-          }
-        }
-        if (component.type && component.type === "container" && !isShiftPressed) {
-          if (component.id === this.draggingComponent.id) {
-            return;
-          }
-          if (draggingParent) {
-            let parent = draggingParent;
-            let children = [...parent.children];
-            children.splice(children.indexOf(this.draggingComponent), 1);
-            parent.children = children;
-          }
-          draggingParent = component;
-          if (componentParent === undefined) {
-            newComponents[newComponents.indexOf(component)].children.push(this.draggingComponent);
-          } else {
-            let draggingComponentParent = this.getParent(newComponents, component);
-            draggingComponentParent.children[draggingComponentParent.children.indexOf(component)].children.push(this.draggingComponent);
-          }
-          this.setState({ components: newComponents });
-        } else {
-          if (component.id === this.draggingComponent.id) {
-            return;
-          }
-          let index = -1;
-          if (draggingParent) {
-            index = draggingParent.children.indexOf(component);
-            draggingParent.children.splice(draggingParent.children.indexOf(this.draggingComponent), 1);
-          }
-          componentParent.children.splice(index === -1 ? componentParent.children.indexOf(component) : index, 0, this.draggingComponent);
-          this.setState({ components: newComponents });
-        }
-      }
-
+    toggleBordersOfComponents(this.dragging);
+    const result = DraggingStarted(this.draggingComponent, component, this.state.components, isShiftPressed);
+    if (result !== null) {
+      this.setState((prevState) => ({ components: result }));
     }
   }
   onDragHandler = (event, component) => {
-    this.addBordersToComponents();
     this.dragging = true;
+    toggleBordersOfComponents(this.dragging);
     this.draggingComponent = component;
     if (!this.draggingComponent.id)
       this.draggingComponent.id = this.idGenerator(this.draggingComponent.component);
   };
   draggingEndedHandler = (event) => {
     this.dragging = false;
-    this.removeBordersFromComponents();
+    toggleBordersOfComponents(this.dragging);
   }
 
   onEditSavedHandler = (event, component) => {
     event.preventDefault();
-    this.removeBordersFromComponents();
-    const newComponents = cloneDeep(this.state.components);
-    component = this.getCopy(newComponents, component);
-    const inputs = event.target.elements;
-    for (let i = 0; i < inputs.length; i++) {
-      if (inputs[i].nodeName !== "BUTTON") {
-        component.params[inputs[i].name].value = inputs[i].value;
-      }
-    }
+    toggleBordersOfComponents(this.dragging);
+    const newComponents = saveComponentEdit(this.state.components, component, event.target.elements);
     this.setState({ components: newComponents });
     event.target.focus();
   }
   onRemoveClickedHandler = (component) => {
-    const newComponents = cloneDeep(this.state.components);
-    let parent = this.getParent(newComponents, component);
-    let children = parent.children;
-    children.splice(children.indexOf(children.filter(comp => comp.id === component.id)[0]), 1);
-    parent.children = children;
+    const newComponents = removeComponent(component, this.state.components);
     this.setState({ components: newComponents });
-  }
-  onMouseOverComponent = (event, id) => {
-    let editor = document.getElementById(id);
-    editor.style.display = 'block';
-    editor.style.position = 'absolute';
-    const elemCoords = event.target.getBoundingClientRect();
-    editor.style.top = elemCoords.top + "px";
-    editor.style.left = elemCoords.left + "px";
-    editor.style.right = elemCoords.right + "px";
-    editor.style.bottom = elemCoords.bottom + "px";
-    editor.style.width = elemCoords.width + "px";
-    editor.style.height = elemCoords.height + "px";
-  }
-  onMouseOutComponent = (event, id) => {
-    let editor = document.getElementById(id);
-    editor.style.display = 'none';
   }
   idGenerator = (componentName) => {
     var S4 = function () {
@@ -266,9 +152,9 @@ class PageRenderer extends React.PureComponent {
     };
     return (componentName + S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
   };
-  loadPage = (design) => {
+  loadPage = (design, seoProps) => {
     this.addEditingEventsToLoad(design);
-    this.setState(prevState => ({ ...prevState, components: design }));
+    this.setState(prevState => ({ ...prevState, components: design, ...seoProps }));
   }
   loadLayout = (layoutName) => {
     axios.get('https://api.adventurouscoding.com/api/layouts/' + encodeURIComponent(layoutName)).then(response => {
@@ -303,13 +189,15 @@ class PageRenderer extends React.PureComponent {
     onDraggingEnded: this.draggingEndedHandler
   }
   render() {
-    const layoutRenderedComponents = this.state.layoutComponents.map(block => {
-      return <LeanComponentRender key={block.id + 's'} block={block} methods={this.methods} ignoreAppContainer={true} />;
-    });
+
     const renderedComponents = this.state.components.map(block => {
       return <ComponentRender key={block.id + 's'} block={block} methods={this.methods} />;
     });
-
+    const layoutRenderedComponents = this.state.layoutComponents.map(block => {
+      return <LeanComponentRender key={block.id + 's'} block={block} methods={this.methods} ignoreAppContainer={true} content={this.state.components.map(block => {
+        return <ComponentRender key={block.id + 's'} block={block} methods={this.methods} />;
+      })[0]} />;
+    });
     if (this.state.loading) {
       return <Spinner />
     }
@@ -319,6 +207,9 @@ class PageRenderer extends React.PureComponent {
     return (
       <Aux>
         <div className="App">
+          <Modal show={this.state.showSeoModal} modalClosed={this.toggleSeoModal}>
+            <SeoEditor title={this.state.title} image={this.state.image} description={this.state.description} type={this.state.type} onSave={this.onSaveSeo} />
+          </Modal>
           <Sidebar>
             <SidebarItem>
               <DraggableItem onDragEnd={this.draggingEndedHandler} onDragStart={this.onDragHandler} data={{
@@ -425,7 +316,11 @@ class PageRenderer extends React.PureComponent {
                 type: 'container',
                 children: []
               }}>Login</DraggableItem>
-
+              {this.state.layoutEditing ?
+                <DraggableItem onDragEnd={this.draggingEndedHandler} onDragStart={this.onDragHandler} data={{
+                  component: "Content",
+                  importLocation: "/Content/Content"
+                }}>Content</DraggableItem> : null}
             </SidebarItem>
             <button onClick={this.switchEditingMode}>Switch editing mode</button>
             <button onClick={this.toggleSeoModal}>Edit SEO properties</button>
@@ -450,16 +345,11 @@ class PageRenderer extends React.PureComponent {
           </Sidebar>
 
           <div style={{ marginLeft: '20%', width: '80%' }}>
-
-            {layoutRenderedComponents}
-            {renderedComponents}
-
+            {this.state.layoutEditing ? renderedComponents : layoutRenderedComponents}
           </div>
 
         </div>
-        <Modal show={this.state.showSeoModal} modalClosed={this.toggleSeoModal}>
-          <SeoEditor title={this.state.title} image={this.state.image} description={this.state.description} type={this.state.type} onSave={this.onSaveSeo} />
-        </Modal>
+
       </Aux>
     );
   }

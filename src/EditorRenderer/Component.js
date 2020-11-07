@@ -63,6 +63,9 @@ class ComponentRender extends Component {
     if(this.props.ignoreAppContainer && this.props.block.component==="AppContainer")
     {
       component = dynamic(() => import('../hoc/Auxilary'));
+    }else if(this.props.block.component==="Content" && this.props.content){
+      return this.props.content;
+      //this.props.block.children=this.props.content;
     }else{
       component = dynamic(() => import('../components' + this.props.block.importLocation));
     }

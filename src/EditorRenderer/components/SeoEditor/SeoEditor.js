@@ -1,15 +1,16 @@
 import React,{useState} from 'react';
 function SeoEditor(props) {
-
-    const[title,setTitle]=useState(props.title);
-    const[description,setDescription]=useState(props.description);
-    const[image,setImage]=useState(props.image);
-    const[type,setType]=useState(props.type);
+    let title=props.title?props.title:'';
+    //const[title,setTitle]=useState(props.title?props.title:'');
+    const[description,setDescription]=useState(props.description?props.description:'');
+    const[image,setImage]=useState(props.image?props.image:'');
+    const[type,setType]=useState(props.type?props.type:'');
+    console.log(props);
     return (<div>
-        <form onSubmit={(e)=>{e.preventDefault(); props.onSave({title,description,image,type})}}>
+        <form onSubmit={(e)=>{e.preventDefault(); console.log('save'); props.onSave({title,description,image,type})}}>
             <label>
                 Title
-        <input value={title} onChange={(e)=>{setTitle(e.target.value)}} />
+        <input defaultValue={title} onChange={(e)=>{title=e.target.value}} />
             </label>
             <label>
                 Description

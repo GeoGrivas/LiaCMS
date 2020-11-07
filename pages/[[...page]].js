@@ -37,12 +37,16 @@ const Page = (props) => {
             }
         } else isUpdate.current = true;
     });
-    const LeanComponentRender = (block, idAdd) => {
+    const LeanComponentRender = (block, idAdd,content) => {
         let Component = null;
         if (block.component === "AppContainer") {
             Component = React.Fragment;
-        }
+        } 
         else {
+            if (block.component === "Content") {
+                //console.log(props.page[0].children);
+                block.children = pageState.page[0].children;
+            }
             Component = componentsList[block.component];
         }
         let children = null;
@@ -63,21 +67,20 @@ const Page = (props) => {
             );
         }
     }
-    const render = LeanComponentRender(props.page[0], 'p');
-    const layout = LeanComponentRender(props.layout[0], 'l');
+    //const render = LeanComponentRender(props.page[0], 'p');
+    const page = LeanComponentRender(props.layout[0], 'l',props.page[0].children);
     return (
         <Aux>
             <Head>
-                <title>{props.pageName}</title>
+                <title>{props.title}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             {editing ?
                 (<InitAuthState>
-                    <EditingPageRenderer currentPage={ currentPage} />
+                    <EditingPageRenderer currentPage={currentPage} />
                 </InitAuthState>) :
                 <Aux>
-                    {layout}
-                    {render}
+                    {page}
                 </Aux>
             }
         </Aux>
@@ -91,7 +94,7 @@ export async function getStaticPaths() {
     const paths = response.map(path => ({ params: { page: (decodeURIComponent(path).substring(1).split('/')) }, }));
     return {
         paths,
-        fallback: false
+        fallback: true
     }
 }
 
@@ -101,5 +104,5 @@ export async function getStaticProps({ params }) {
     const page = response.content;
     const layout = response.layout;
     const title = response.title;
-    return { props: { pageName: route, page: JSON.parse(page),layout: JSON.parse(layout.content),title }, revalidate: 60 }
+    return { props: { pageName: route, page: JSON.parse(page), layout: JSON.parse(layout.content), title }, revalidate: 60 }
 }
