@@ -104,5 +104,5 @@ export async function getStaticProps({ params }) {
     const page = response.content;
     const layout = response.layout;
     const title = response.title;
-    return { props: { pageName: route, page: JSON.parse(page), layout: JSON.parse(layout.content), title }, revalidate: 60 }
+    return { props: { pageName: route, page: JSON.parse(page), layout: JSON.parse(layout.content), title }, revalidate: 1 }
 }
