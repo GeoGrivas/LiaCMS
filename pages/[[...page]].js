@@ -6,7 +6,10 @@ import { useRouter } from 'next/router';
 import InitAuthState from '../src/components/Authentication/InitAuthState';
 import componentsList from '../src/Renderer/componentsList';
 import axios from 'axios';
+import DefaultErrorPage from 'next/error';
+import Spinner from '../src/components/UI/Spinner/Spinner';
 const Page = (props) => {
+
     const router = useRouter();
     const isUpdate = useRef(false);
     const editing = router.query.hasOwnProperty('edit');
@@ -22,7 +25,7 @@ const Page = (props) => {
 
     useEffect(() => {
         if (isUpdate.current) {
-            if (pageState.currentPage !== currentPage) {
+            if (pageState.currentPage !== currentPage && !props.notFound) {
                 axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(currentPage)).then(response => {
                     setPageState(
                         {
@@ -69,7 +72,22 @@ const Page = (props) => {
         }
     }
     //const render = LeanComponentRender(props.page[0], 'p');
-    const page = LeanComponentRender(pageState.layout[0]?pageState.layout[0]:[], 'l');
+    let page = null;
+    if (router.isFallback) {
+        page = (<Spinner/>);
+    } else if (props.notFound) {
+        return (
+            <Aux>
+                <Head>
+                    <meta name="robots" content="noindex" />
+                </Head>
+                <DefaultErrorPage statusCode={404} />
+            </Aux>
+        )
+    }
+    else {
+        page = LeanComponentRender(pageState.layout[0] ? pageState.layout[0] : [], 'l');
+    }
     return (
         <Aux>
             <Head>
@@ -95,14 +113,23 @@ export async function getStaticPaths() {
     const paths = response.map(path => ({ params: { page: (decodeURIComponent(path).substring(1).split('/')) }, }));
     return {
         paths,
-        fallback: false
+        fallback: true
     }
 }
 export async function getStaticProps({ params }) {
+    console.log('revalidating!');
     let route = params.page ? params.page : '';
-    const response = await (await fetch("https://api.adventurouscoding.com/api/pages/" + encodeURIComponent('/' + route))).json();
+    const resp = await fetch("https://api.adventurouscoding.com/api/pages/" + encodeURIComponent('/' + route));
+    if (!resp.ok) {
+        if (resp.status >= 400 < 500) {
+            return { props: { notFound: true } };
+        } else {
+            return { props: { serverError: true } };
+        }
+    }
+    const response = await resp.json();
     const page = response.content;
     const layout = response.layout;
     const title = response.title;
-    return { props: { pageName: route, page: JSON.parse(page), layout: JSON.parse(layout.content), title }, revalidate: 1 }
+    return { props: { pageName: route, page: JSON.parse(page), layout: JSON.parse(layout.content), title, notFound: false }, revalidate: 1 }
 }
