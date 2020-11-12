@@ -9,6 +9,7 @@ class ParamsEditor extends Component {
   };
 
   toggleOptions = (event) => {
+    event?event.stopPropagation():null;
     this.setState({ optionsOpen: !this.state.optionsOpen });
   }
 
@@ -35,7 +36,7 @@ class ParamsEditor extends Component {
               </div>
           <button className={classes.Remove+' '+classes.Button} onClick={(event) => {this.props.onRemove(this.props.component) }} style={{ zIndex: this.props.component.level + 2 }}>&times;</button>
         </div>
-        <div className='ParamsEditorBody'>
+        <div className='ParamsEditorBody' onClick={(event)=>{event.stopPropagation()}}>
           {inputs !== null ?
             <div style={{ display: this.state.optionsOpen ? "block" : "none"}}>
               <button className={classes.Button+' '+classes.Close} onClick={(event) => { event.preventDefault(); event.stopPropagation(); this.toggleOptions(); }} style={{ zIndex: this.props.component.level + 2 }}>&times;</button>

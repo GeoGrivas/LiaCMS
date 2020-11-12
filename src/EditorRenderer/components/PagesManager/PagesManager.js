@@ -16,15 +16,13 @@ class PagesManager extends Component {
         axios.get("https://api.adventurouscoding.com/api/pages", {
             headers: {
                 'Authorization': `bearer ${this.props.token}`
-            },
-            withCredentials:true
+            }
         }).then(response => {
             const pages = response.data.map(page => (decodeURIComponent(page)));
             axios.get("https://api.adventurouscoding.com/api/layouts", {
                 headers: {
                     'Authorization': `bearer ${this.props.token}`
-                },
-                withCredentials:true
+                }
             }).then(response => {
                 const layouts = response.data;
                 this.setState(prevState => ({pages: pages, selectedPage: this.props.currentPage, currentPage: this.props.currentPage, layouts: layouts, selectedLayout: this.props.selectedLayout }));
@@ -35,8 +33,7 @@ class PagesManager extends Component {
         axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(this.state.selectedPage), {
             headers: {
                 'Authorization': `Bearer ${this.props.token}`
-            },
-            withCredentials:true
+            }
         }).then(response => {
             const page = response.data.content;
             const layout = response.data.layout.content;
@@ -53,8 +50,7 @@ class PagesManager extends Component {
         axios.delete('https://api.adventurouscoding.com/api/pages/delete/' + encodeURIComponent(this.state.selectedPage), {
             headers: {
                 'Authorization': `Bearer ${this.props.token}`
-            },
-            withCredentials:true
+            }
         });
         this.setState(prevState => {
             var idx = prevState.pages.indexOf(prevState.selectedPage);
@@ -64,7 +60,6 @@ class PagesManager extends Component {
         });
     }
     savePageHandler = () => {
-        console.log(this.props.title)
         axios.put('https://api.adventurouscoding.com/api/pages/put', { 
             path: encodeURIComponent(this.state.currentPage),
              content: JSON.stringify(this.props.design),
@@ -76,8 +71,7 @@ class PagesManager extends Component {
             }, {
             headers: {
                 'Authorization': `Bearer ${this.props.token}`
-            },
-            withCredentials:true
+            }
         }
         ).then(response1 => {
             axios.get("https://api.adventurouscoding.com/api/pages").then(response2 => {
@@ -101,7 +95,6 @@ class PagesManager extends Component {
        setTimeout(this.loadPageHandler,150);
     }
     render() {
-        axios.defaults.withCredentials=true;
         return (<div className={classes.Container}>
             <input value={this.state.currentPage} onChange={event => { const value = event.target.value; this.setState(prevState => ({ ...prevState, currentPage: value })) }} />
             <button onClick={this.savePageHandler}>Save</button>

@@ -17,7 +17,10 @@ const componentsList={
     Row:dynamic(()=>import('../components/Row/Row'),{ssr:true}),
     Column:dynamic(()=>import('../components/Column/Column'),{ssr:true}),
     Image1:dynamic(()=>import('../components/Card/Image1/Image1'),{ssr:true}),
-    Content:dynamic(()=>import('../components/Content/Content'))
+    Content:dynamic(()=>import('../components/Content/Content')),
+    Datepicker:dynamic(()=>import('../components/Datepicker/Datepicker')),
+    Datepicker2:dynamic(()=>import('../components/Datepicker/Datepicker2'),{ssr:false}),
+    CarouselComponent:dynamic(()=>import('../components/Carousel/Carousel'))
 };
 
 

@@ -374,16 +374,22 @@ body {
 
 .ParamsEditor {
   background-color: white;
-  display: flex;
+  display: none;
   position: relative;
-  background-color: #ccc;
-  width: inherit;
+  width: 200px;
+  z-index: 99999999;
 }
 .Options {
-  position: absolute;
+  position: block;
   display: none;
+  background-color: transparent;
 }
+
 .ParamsEditor.show_editor>.Options{
+  display:block;
+  z-index: 99999999;
+}
+.ParamsEditor.show_editor{
   display:block;
 }
 .border{
@@ -392,11 +398,10 @@ body {
 
 .ParamsEditorBody {
   display: block;
-  position: absolute;
-  right:0;
+  margin: auto;
   background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  z-index: 999999999999999;
+  z-index: inherit;
   width:500px;
 }
 
@@ -1301,4 +1306,8 @@ body {
     -webkit-box-ordinal-group: 2;
     order: 1;
   }
+}
+
+.is-locked{
+  background: rgba(115, 115, 115, 0.34)!important;
 }

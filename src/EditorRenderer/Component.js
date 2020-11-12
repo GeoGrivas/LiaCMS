@@ -40,6 +40,14 @@ class ComponentRender extends Component {
       event.target.classList.add('selected_component');
       if (document.getElementById('paramsEditor' + id))
         document.getElementById('paramsEditor' + id).classList.add('show_editor');
+      if(this.props.block.type==='container')
+      {
+        for(let i =0;i<this.props.block.children.length;i++)
+        {
+          document.getElementById('paramsEditor' + this.props.block.children[i].id).classList.add('show_editor');
+          //document.getElementById('paramsEditor' + this.props.block.children[i].id).style.display='inline-block';
+        }
+      }
     }
   }
   onMouseUp = (event) => {

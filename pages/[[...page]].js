@@ -47,7 +47,6 @@ const Page = (props) => {
         }
         else {
             if (block.component === "Content") {
-                //console.log(props.page[0].children);
                 if (pageState.page)
                     block.children = pageState.page[0].children;
             }
@@ -69,12 +68,12 @@ const Page = (props) => {
             return (
                 <Component block={block} key={block.id + idAdd}>{children}</Component>
             );
+
         }
     }
-    //const render = LeanComponentRender(props.page[0], 'p');
     let page = null;
     if (router.isFallback) {
-        page = (<Spinner/>);
+        page = (<Spinner />);
     } else if (props.notFound) {
         return (
             <Aux>

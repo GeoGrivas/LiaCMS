@@ -1,32 +1,42 @@
-import React,{useState} from 'react';
+import React, { useState,useEffect } from 'react';
+import Modal from '../../../components/UI/Modal/Modal';
 function SeoEditor(props) {
-    let title=props.title?props.title:'';
-    //const[title,setTitle]=useState(props.title?props.title:'');
-    const[description,setDescription]=useState(props.description?props.description:'');
-    const[image,setImage]=useState(props.image?props.image:'');
-    const[type,setType]=useState(props.type?props.type:'');
-    console.log(props);
-    return (<div>
-        <form onSubmit={(e)=>{e.preventDefault(); console.log('save'); props.onSave({title,description,image,type})}}>
-            <label>
-                Title
-        <input defaultValue={title} onChange={(e)=>{title=e.target.value}} />
-            </label>
-            <label>
-                Description
-        <input value={description} onChange={(e)=>{setDescription(e.target.value)}} />
-            </label>
-            <label>
-                Image
-        <input value={image} onChange={(e)=>{setImage(e.target.value)}} />
-            </label>
-            <label>
-                Type
-        <input value={type} onChange={(e)=>{setType(e.target.value)}} />
-            </label>
-            <button type="submit">Save</button>
-        </form>
-    </div>);
+
+    const [state,setState]=useState({
+        title:props.title!==null?props.title:'' ,
+        description:props.description!==null?props.description:'' ,
+        image:props.image!==null?props.image:'' ,
+        type:props.type!==null?props.type:''
+    });
+    const [showModal,setShowModal]=useState(false);
+    useEffect(() => {
+       setShowModal(true);
+    },[]);
+    return (
+        <Modal show={showModal} modalClosed={props.modalClosed}>
+            <div>
+                <form onSubmit={(e) => { e.preventDefault(); console.log('save'); props.onSave({ title:state.title, description:state.description, image:state.image, type:state.type }) }}>
+                    <label>
+                        Title
+        <input value={state.title} onChange={(e) => { setState((prevState)=>({...prevState,title:e.target.value})) }} />
+                    </label>
+                    <label>
+                        Description
+        <input value={state.description} onChange={(e) => { setState((prevState)=>({...prevState,description:e.target.value})) }} />
+                    </label>
+                    <label>
+                        Image
+        <input value={state.image} onChange={(e) => { setState((prevState)=>({...prevState,image:e.target.value})) }} />
+                    </label>
+                    <label>
+                        Type
+        <input value={state.type} onChange={(e) => { setState((prevState)=>({...prevState,type:e.target.value})) }} />
+                    </label>
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+        </Modal>
+    );
 }
 
 export default SeoEditor;

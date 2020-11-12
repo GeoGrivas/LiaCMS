@@ -7,7 +7,7 @@ const column = (props) =>{
                 columClass+='-'+props.block.params.span.value;
         }
         return(
-        <div className={classes.Column+columClass}>
+        <div className={classes.Column+columClass} style={{textAlign:props.block.params.textAlign?props.block.params.textAlign.value:''}}>
                 {props.children.length>0?props.children:"drop something in the column"}
         </div>
 );}
