@@ -12,8 +12,14 @@ function SeoEditor(props) {
     useEffect(() => {
        setShowModal(true);
     },[]);
+    const closeModal=()=>{
+        setShowModal(false);
+        setTimeout(()=>{
+            props.modalClosed();
+        },500);
+    };
     return (
-        <Modal show={showModal} modalClosed={props.modalClosed}>
+        <Modal show={showModal} modalClosed={closeModal}>
             <div>
                 <form onSubmit={(e) => { e.preventDefault(); console.log('save'); props.onSave({ title:state.title, description:state.description, image:state.image, type:state.type }) }}>
                     <label>

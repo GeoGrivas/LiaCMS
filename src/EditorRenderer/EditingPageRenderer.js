@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import Sidebar from './components/Layout/Sidebar/Sidebar';
 import SidebarItem from './components/Layout/Sidebar/SidebarItem/SidebarItem';
-import ComponentRender from './Component';
 import { connect } from 'react-redux';
 import * as actions from '../components/Authentication/store/actions/index';
 import PagesManager from './components/PagesManager/PagesManager';
 import axios from 'axios';
 import Aux from '../hoc/Auxilary';
 import LayoutsManager from './components/LayoutsManager/LayoutsManager';
-import LeanComponentRender from '../Renderer/LeanComponentRender';
 import EditorLogin from './components/EditorLogin/EditorLogin';
 import Spinner from '../components/UI/Spinner/Spinner';
 import SeoEditor from './components/SeoEditor/SeoEditor';
 import { toggleBordersOfComponents, DraggingStarted, removeComponent, saveComponentEdit } from './Logic/EditingLogic';
 import ComponentsList from './components/componentsList/componentsList2';
+import RenderedComponents from './RenderedComponents';
 class PageRenderer extends Component {
 
   state = {
@@ -188,14 +187,7 @@ class PageRenderer extends Component {
   }
   render() {
 
-    const renderedComponents = this.state.components.map(block => {
-      return <ComponentRender key={block.id + 's'} block={block} methods={this.methods} />;
-    });
-    const layoutRenderedComponents = this.state.layoutComponents.map(block => {
-      return <LeanComponentRender key={block.id + 's'} block={block} methods={this.methods} ignoreAppContainer={true} content={this.state.components.map(block => {
-        return <ComponentRender key={block.id + 's'} block={block} methods={this.methods} />;
-      })[0]} />;
-    });
+    
     if (this.state.loading) {
       return <Spinner />
     }
@@ -239,7 +231,12 @@ class PageRenderer extends Component {
           </Sidebar>
 
           <div style={{ marginLeft: '20%', width: '80%' }}>
-            {this.state.layoutEditing ? renderedComponents : layoutRenderedComponents}
+             <RenderedComponents
+              contentComponents={this.state.components}
+              layoutComponents={this.state.layoutComponents}
+              layoutEditing={this.state.layoutEditing}
+              methods={this.methods}
+            />
           </div>
 
         </div>
