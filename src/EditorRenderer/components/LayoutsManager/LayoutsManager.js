@@ -10,7 +10,7 @@ class LayoutsManager extends Component {
     }
 
     componentDidMount = () => {
-        axios.get("https://api.adventurouscoding.com/api/layouts",{
+        axios.get("https://api.adventurouscoding.com/api/management/layouts",{
             headers: {
             'Authorization': `bearer ${this.props.token}` 
           }}).then(response => {
@@ -21,7 +21,7 @@ class LayoutsManager extends Component {
         });
     }
     loadPageHandler = () => {
-        axios.get('https://api.adventurouscoding.com/api/layouts/' + encodeURIComponent(this.state.selectedPage),{
+        axios.get('https://api.adventurouscoding.com/api/management/layouts/' + encodeURIComponent(this.state.selectedPage),{
             headers: {
             'Authorization': `Bearer ${this.props.token}` 
           }}).then(response => {
@@ -34,7 +34,7 @@ class LayoutsManager extends Component {
         });
     }
     removePageHandler = () => {
-        axios.delete('https://api.adventurouscoding.com/api/layouts/delete/' + encodeURIComponent(this.state.selectedPage),{
+        axios.delete('https://api.adventurouscoding.com/api/management/layouts/delete/' + encodeURIComponent(this.state.selectedPage),{
             headers: {
             'Authorization': `Bearer ${this.props.token}` 
           }});
@@ -46,12 +46,12 @@ class LayoutsManager extends Component {
         });
     }
     savePageHandler = () => {
-        axios.put('https://api.adventurouscoding.com/api/layouts/put', {name:this.state.currentPage, content: JSON.stringify(this.props.design) },{
+        axios.put('https://api.adventurouscoding.com/api/management/layouts/put', {name:this.state.currentPage, content: JSON.stringify(this.props.design) },{
             headers: {
             'Authorization': `Bearer ${this.props.token}` 
           }}
         ).then(response1 => {
-            axios.get("https://api.adventurouscoding.com/api/layouts").then(response2 => {
+            axios.get("https://api.adventurouscoding.com/api/management/layouts").then(response2 => {
                 const pages = response2.data;
                 this.setState(prevState => ({ ...prevState, pages: pages }));
             }).catch(err => {

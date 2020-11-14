@@ -39,7 +39,13 @@ class PageRenderer extends Component {
   componentDidMount = () => {
     if (this.props.isAuthenticated) {
       this.initEmptyPage();
-      axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(this.props.currentPage)).then(response => {
+      console.log(this.props.currentPage);
+      axios.get('https://api.adventurouscoding.com/api/management/pages/' + encodeURIComponent(this.props.currentPage),{
+        headers: {
+            'Authorization': `Bearer ${this.props.token}`
+        }
+    }).then(response => {
+        console.log(response);
         const page = response.data.content;
         const layout = response.data.layout.content;
         const layoutName = response.data.layoutName;
@@ -154,7 +160,7 @@ class PageRenderer extends Component {
     this.setState(prevState => ({ ...prevState, components: design, ...seoProps }));
   }
   loadLayout = (layoutName) => {
-    axios.get('https://api.adventurouscoding.com/api/layouts/' + encodeURIComponent(layoutName)).then(response => {
+    axios.get('https://api.adventurouscoding.com/api/management/layouts/' + encodeURIComponent(layoutName)).then(response => {
       const layout = response.data.content;
       if (layout) {
         this.drawLayout(layout);
@@ -186,8 +192,6 @@ class PageRenderer extends Component {
     onDraggingEnded: this.draggingEndedHandler
   }
   render() {
-
-    
     if (this.state.loading) {
       return <Spinner />
     }

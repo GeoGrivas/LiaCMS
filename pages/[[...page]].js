@@ -74,7 +74,7 @@ const Page = (props) => {
     let page = null;
     if (router.isFallback) {
         page = (<Spinner />);
-    } else if (props.notFound) {
+    } else if (props.notFound && !editing) {
         return (
             <Aux>
                 <Head>
@@ -84,7 +84,7 @@ const Page = (props) => {
             </Aux>
         )
     }
-    else {
+    else if(!editing) {
         page = LeanComponentRender(pageState.layout[0] ? pageState.layout[0] : [], 'l');
     }
     return (

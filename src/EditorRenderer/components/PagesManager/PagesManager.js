@@ -9,28 +9,29 @@ class PagesManager extends Component {
         selectedPage: '',
         layouts: [],
         currentLayout: '',
-        selectedLayout: ''
+        selectedLayout: '',
+        enabled:false
     }
 
     componentDidMount = () => {
-        axios.get("https://api.adventurouscoding.com/api/pages", {
+        axios.get("https://api.adventurouscoding.com/api/management/pages", {
             headers: {
                 'Authorization': `bearer ${this.props.token}`
             }
         }).then(response => {
             const pages = response.data.map(page => (decodeURIComponent(page)));
-            axios.get("https://api.adventurouscoding.com/api/layouts", {
+            axios.get("https://api.adventurouscoding.com/api/management/layouts", {
                 headers: {
                     'Authorization': `bearer ${this.props.token}`
                 }
             }).then(response => {
                 const layouts = response.data;
-                this.setState(prevState => ({pages: pages, selectedPage: this.props.currentPage, currentPage: this.props.currentPage, layouts: layouts, selectedLayout: this.props.selectedLayout }));
+                this.setState(prevState => ({enabled:this.props.enabled,pages: pages, selectedPage: this.props.currentPage, currentPage: this.props.currentPage, layouts: layouts, selectedLayout: this.props.selectedLayout }));
             });
         });
     }
     loadPageHandler = () => {
-        axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(this.state.selectedPage), {
+        axios.get('https://api.adventurouscoding.com/api/management/pages/' + encodeURIComponent(this.state.selectedPage), {
             headers: {
                 'Authorization': `Bearer ${this.props.token}`
             }
@@ -47,7 +48,7 @@ class PagesManager extends Component {
         });
     }
     removePageHandler = () => {
-        axios.delete('https://api.adventurouscoding.com/api/pages/delete/' + encodeURIComponent(this.state.selectedPage), {
+        axios.delete('https://api.adventurouscoding.com/api/management/pages/delete/' + encodeURIComponent(this.state.selectedPage), {
             headers: {
                 'Authorization': `Bearer ${this.props.token}`
             }
@@ -60,21 +61,22 @@ class PagesManager extends Component {
         });
     }
     savePageHandler = () => {
-        axios.put('https://api.adventurouscoding.com/api/pages/put', { 
+        axios.put('https://api.adventurouscoding.com/api/management/pages/put', { 
             path: encodeURIComponent(this.state.currentPage),
              content: JSON.stringify(this.props.design),
               layoutName: this.state.selectedLayout, 
             title:this.props.title,
             description:this.props.description,
             type:this.props.type,
-            image:this.props.image
+            image:this.props.image,
+            enabled:this.state.enabled
             }, {
             headers: {
                 'Authorization': `Bearer ${this.props.token}`
             }
         }
         ).then(response1 => {
-            axios.get("https://api.adventurouscoding.com/api/pages").then(response2 => {
+            axios.get("https://api.adventurouscoding.com/api/management/pages").then(response2 => {
                 const pages = response2.data.map(page => (decodeURIComponent(page)));
                 this.setState(prevState => ({ ...prevState, pages: pages }));
             }).catch(err => {
@@ -96,6 +98,7 @@ class PagesManager extends Component {
     }
     render() {
         return (<div className={classes.Container}>
+            <input type='checkbox' onChange={event=>{const value = event.target.checked; this.setState(prevState=>({...prevState,enabled:value}))}}/>
             <input value={this.state.currentPage} onChange={event => { const value = event.target.value; this.setState(prevState => ({ ...prevState, currentPage: value })) }} />
             <button onClick={this.savePageHandler}>Save</button>
             <hr />
