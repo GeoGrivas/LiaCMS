@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import classes from './LayoutsManager.module.css';
 import axios from 'axios';
+import Button from '../../../components/UI/Button/Button';
 class LayoutsManager extends Component {
     state = {
         currentPage: '',
@@ -10,22 +11,25 @@ class LayoutsManager extends Component {
     }
 
     componentDidMount = () => {
-        axios.get("https://api.adventurouscoding.com/api/management/layouts",{
+        axios.get("https://api.adventurouscoding.com/api/management/layouts", {
             headers: {
-            'Authorization': `bearer ${this.props.token}` 
-          }}).then(response => {
+                'Authorization': `bearer ${this.props.token}`
+            }
+        }).then(response => {
             const pages = response.data;
-            console.log(response.data);
-            this.setState(prevState => ({ ...prevState, pages: pages, selectedPage: '', currentPage: this.props.currentPage }));
-            this.props.cleanCanvas();
+            this.setState(prevState => ({ ...prevState, pages: pages, selectedPage: pages[0], currentPage: this.props.currentPage }));
+            if (Array.isArray(pages) && pages.length > 0)
+                this.loadPageHandler(pages[0]);
+            else
+                this.props.cleanCanvas();
         });
     }
-    loadPageHandler = () => {
-        axios.get('https://api.adventurouscoding.com/api/management/layouts/' + encodeURIComponent(this.state.selectedPage),{
+    loadPageHandler = (selectedPage) => {
+        axios.get('https://api.adventurouscoding.com/api/management/layouts/' + encodeURIComponent(selectedPage), {
             headers: {
-            'Authorization': `Bearer ${this.props.token}` 
-          }}).then(response => {
-              console.log(response);
+                'Authorization': `Bearer ${this.props.token}`
+            }
+        }).then(response => {
             const page = response.data.content;
             this.props.loadPage(JSON.parse(page));
         }).catch(err => {
@@ -34,10 +38,11 @@ class LayoutsManager extends Component {
         });
     }
     removePageHandler = () => {
-        axios.delete('https://api.adventurouscoding.com/api/management/layouts/delete/' + encodeURIComponent(this.state.selectedPage),{
+        axios.delete('https://api.adventurouscoding.com/api/management/layouts/delete/' + encodeURIComponent(this.state.selectedPage), {
             headers: {
-            'Authorization': `Bearer ${this.props.token}` 
-          }});
+                'Authorization': `Bearer ${this.props.token}`
+            }
+        });
         this.setState(prevState => {
             var idx = prevState.pages.indexOf(prevState.selectedPage);
             var currentPages = [...prevState.pages];
@@ -46,10 +51,11 @@ class LayoutsManager extends Component {
         });
     }
     savePageHandler = () => {
-        axios.put('https://api.adventurouscoding.com/api/management/layouts/put', {name:this.state.currentPage, content: JSON.stringify(this.props.design) },{
+        axios.put('https://api.adventurouscoding.com/api/management/layouts/put', { name: this.state.currentPage, content: JSON.stringify(this.props.design) }, {
             headers: {
-            'Authorization': `Bearer ${this.props.token}` 
-          }}
+                'Authorization': `Bearer ${this.props.token}`
+            }
+        }
         ).then(response1 => {
             axios.get("https://api.adventurouscoding.com/api/management/layouts").then(response2 => {
                 const pages = response2.data;
@@ -66,13 +72,12 @@ class LayoutsManager extends Component {
             <input value={this.state.currentPage} onChange={event => { const value = event.target.value; this.setState(prevState => ({ ...prevState, currentPage: value })) }} />
             <button onClick={this.savePageHandler}>Save</button>
             <hr />
-            <select onChange={event => { const value = event.target.value;console.log(event.target); this.setState(prevState => ({ ...prevState, currentPage: value, selectedPage: value })); }}>
+            <select value={this.state.selectedPage} onChange={event => { const value = event.target.value; this.setState(prevState => ({ ...prevState, currentPage: value, selectedPage: value })); this.loadPageHandler(value); }}>
                 <option>Select a layout</option>
                 {this.state.pages.map(page => <option key={page}>{page}</option>)}
             </select>
             <br />
-            <button onClick={this.removePageHandler}>Remove</button>
-            <button onClick={this.loadPageHandler}>Load</button>
+            <Button class='danger' onClick={this.removePageHandler}>Remove</Button>
 
         </div>);
     }

@@ -127,6 +127,7 @@ export async function getStaticProps({ params }) {
         }
     }
     const response = await resp.json();
+    console.log(response);
     const page = response.content;
     const layout = response.layout;
     const title = response.title;

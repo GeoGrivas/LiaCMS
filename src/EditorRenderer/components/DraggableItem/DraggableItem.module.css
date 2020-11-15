@@ -1,0 +1,17 @@
+.draggableItem{
+    background-color: lightgray;
+    cursor: grab;
+    font-weight: 500;
+    width:40%;
+    color:black;
+    margin:5px 5px;
+    display:inline-block;
+    padding:5px;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+}
+.draggableItem:hover{
+    box-shadow: 0px 15px 20px rgba(122, 119, 119, 0.4);
+    transform: translateY(-2px);
+}

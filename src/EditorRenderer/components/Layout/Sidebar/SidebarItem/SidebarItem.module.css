@@ -1,7 +1,26 @@
 .SidebarItem {
-    padding: 6px 06px 0;
-    text-decoration: none;
-    font-size: 18px;
-    color: #818181;
-    display: block;
+  max-height: 50%;
+  margin:5px;
+  margin-bottom: auto;
+  padding:10px;
+  box-shadow: inset 0 -0.6em 1em -0.35em rgba(0, 0, 0, 0.17), inset 0 0.6em 2em -0.3em rgba(255, 255, 255, 0.15), inset 0 0 0em 0.05em rgba(255, 255, 255, 0.12);
   }
+.scrollable{
+  overflow-y: scroll;
+}
+.scrollable::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.scrollable::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+.scrollable::-webkit-scrollbar-thumb {
+  background:rgb(247, 65, 65);
+  border-radius: 10px;
+}
+

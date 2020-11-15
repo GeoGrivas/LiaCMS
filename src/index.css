@@ -356,12 +356,20 @@ body {
 }
 
 :root {
-  --primary: #7E8287;
+  --primary: #3369ff;
+  --primary-text-color:white;
+  --primary-hover:#2750c2;
+  --primary-outline:#618bff;
   --primary-light: #9DA39A;
   --secondary: #54494B;
   --information: #DB2955;
   --success: #54494B;
-  --warning: #E7D192;
+  --warning: rgb(216, 216, 38);
+  --warning-text-color:black;
+  --warning-hover:rgb(197, 197, 36);
+  --danger:#DB2955;
+  --danger-text-color:white;
+  --danger-hover:#b62146;
 }
 .selected_component{
   border: 2px black dotted;

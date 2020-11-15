@@ -13,6 +13,8 @@ import SeoEditor from './components/SeoEditor/SeoEditor';
 import { toggleBordersOfComponents, DraggingStarted, removeComponent, saveComponentEdit } from './Logic/EditingLogic';
 import ComponentsList from './components/componentsList/componentsList2';
 import RenderedComponents from './RenderedComponents';
+import Redeploy from './components/Redeploy/Redeploy';
+import Button from '../components/UI/Button/Button';
 class PageRenderer extends Component {
 
   state = {
@@ -24,7 +26,8 @@ class PageRenderer extends Component {
     title: '',
     description: '',
     type: '',
-    image: ''
+    image: '',
+    enabled: false
   }
   showSeoModal = false;
   draggingComponent = null;
@@ -39,39 +42,16 @@ class PageRenderer extends Component {
   componentDidMount = () => {
     if (this.props.isAuthenticated) {
       this.initEmptyPage();
-      console.log(this.props.currentPage);
-      axios.get('https://api.adventurouscoding.com/api/management/pages/' + encodeURIComponent(this.props.currentPage),{
-        headers: {
-            'Authorization': `Bearer ${this.props.token}`
-        }
-    }).then(response => {
-        console.log(response);
-        const page = response.data.content;
-        const layout = response.data.layout.content;
-        const layoutName = response.data.layoutName;
-        if (page) {
-          this.setState(prevState => ({
-            ...prevState,
-            components: JSON.parse(page),
-            layoutComponents: JSON.parse(layout),
-            selectedLayout: layoutName,
-            loading: false,
-            title: response.data.title,
-            image: response.data.image,
-            type: response.data.type,
-            description: response.data.description
-          }));
-        }
-      }).catch(err => {
-        console.log("error" + err);
-      });
+
+      this.setState(prevState => ({
+        ...prevState,
+        loading: false
+      }));
     } else {
       this.props.onTryAutoSignup();
       this.setState(prevState => ({ ...prevState, loading: false }));
     }
   }
-
-
   initEmptyPage = () => {
     this.setState(prevState => {
       return {
@@ -113,9 +93,6 @@ class PageRenderer extends Component {
   onSaveSeo = (properties) => {
     this.setState((prevState) => ({ ...prevState, ...properties }));
   }
-
-
-
   onDragOver = (event, component) => {
     event.preventDefault();
     event.stopPropagation();
@@ -205,18 +182,25 @@ class PageRenderer extends Component {
             <SeoEditor show={this.state.showSeoModal} modalClosed={this.toggleSeoModal} title={this.state.title} image={this.state.image} description={this.state.description} type={this.state.type} onSave={this.onSaveSeo} />
             : null}
           <Sidebar>
-            <SidebarItem>
+            <Redeploy />
+            <h4>
+              Components
+        </h4>
+            <SidebarItem scrollable>
               <ComponentsList
                 draggingEndedHandler={this.draggingEndedHandler}
                 onDragHandler={this.onDragHandler}
                 layoutEditing={this.state.layoutEditing}
               />
             </SidebarItem>
-            <button onClick={this.switchEditingMode}>Switch editing mode</button>
-            <button onClick={this.toggleSeoModal}>Edit SEO properties</button>
+            <SidebarItem>
+              <Button class='warning' onClick={this.switchEditingMode}>Switch editing mode</Button>
+              <Button class='primary' onClick={this.toggleSeoModal}>Edit SEO properties</Button>
+
+            </SidebarItem>
             <SidebarItem>
               {this.state.layoutEditing
-                ? <LayoutsManager cleanCanvas={this.cleanCanvas} loadPage={this.loadPage} design={this.state.components} currentDesign={this.state.components} currentPage={this.props.currentPage} /> :
+                ? <LayoutsManager cleanCanvas={this.cleanCanvas} currentLayout={this.state.selectedLayout} loadPage={this.loadPage} design={this.state.components} currentDesign={this.state.components} currentPage={this.props.currentPage} /> :
                 <PagesManager
                   selectedLayout={this.state.selectedLayout}
                   drawLayout={this.drawLayout}
@@ -229,13 +213,14 @@ class PageRenderer extends Component {
                   image={this.state.image}
                   description={this.state.description}
                   type={this.state.type}
+                  enabled={this.state.enabled}
                 />
               }
             </SidebarItem>
           </Sidebar>
 
           <div style={{ marginLeft: '20%', width: '80%' }}>
-             <RenderedComponents
+            <RenderedComponents
               contentComponents={this.state.components}
               layoutComponents={this.state.layoutComponents}
               layoutEditing={this.state.layoutEditing}
