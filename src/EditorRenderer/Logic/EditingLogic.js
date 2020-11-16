@@ -46,7 +46,7 @@ const getParent = (components, child) => {
     }
     return true;
   }
-  const removeBordersFromComponents = () => {
+ export const removeBordersFromComponents = () => {
     let editors = document.getElementsByClassName('editorContainer');
     for (let i = 0; i < editors.length; i++) {
       if (editors[i].childNodes.length > 2) {

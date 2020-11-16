@@ -62,19 +62,30 @@ const ComponentsList = (props) => {
             </h5>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
                 component: "Heading",
-                params: { text: { value: 'alt-click to edit props title' }, size: { type: 'select', value: '1', options: [1, 2, 3, 4, 5, 6] } },
+                params: {
+                    text: { value: 'alt-click to edit props title' },
+                    size: { type: 'select', value: '1', options: [1, 2, 3, 4, 5, 6] },
+                    style: { value: '', type: 'select', options: ['', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
+                },
                 importLocation: "/Heading/Heading"
             }}>Heading</DraggableItem>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
                 component: "Paragraph",
                 importLocation: "/Paragraph/Paragraph",
-                params: { text: { value: "alt-click to edit props paragraph" } }
+                params: {
+                    text: { value: "alt-click to edit props paragraph" },
+                    style: { value: '', type: 'select', options: ['', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
+                },
             }}>Paragraph</DraggableItem>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
-                component: "ButtonLink",
-                importLocation: "/ButtonLink/ButtonLink",
-                params: { url: { value: "/" }, text: { value: "button link" } },
-            }}>Button Link</DraggableItem>
+                component: "WrappedButton",
+                importLocation: "/UI/Button/WrappedButton",
+                params: {
+                    url: { value: "" },
+                    text: { value: "button" },
+                    style: { value: '', type: 'select', options: ['', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
+                },
+            }}>Button</DraggableItem>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
                 component: "Header",
                 importLocation: "/Header/Header",

@@ -15,6 +15,7 @@ import ComponentsList from './components/componentsList/componentsList2';
 import RenderedComponents from './RenderedComponents';
 import Redeploy from './components/Redeploy/Redeploy';
 import Button from '../components/UI/Button/Button';
+import TemplatingTool from './components/TemplatingTool/TemplatingTool';
 class PageRenderer extends Component {
 
   state = {
@@ -27,7 +28,8 @@ class PageRenderer extends Component {
     description: '',
     type: '',
     image: '',
-    enabled: false
+    enabled: false,
+    mode: 'building'
   }
   showSeoModal = false;
   draggingComponent = null;
@@ -175,51 +177,67 @@ class PageRenderer extends Component {
     if (!this.props.isAuthenticated) {
       return <EditorLogin />
     }
+    let sidebarContent = null;
+    if (this.state.mode === 'building') {
+      sidebarContent = <React.Fragment>
+        <Redeploy /><Button class='primary' onClick={() => { this.setState(prevState => ({ ...prevState, mode: 'template-mapping' })) }}>Templating</Button>
+        <h4>
+          Components
+        </h4>
+        <SidebarItem scrollable>
+          <ComponentsList
+            draggingEndedHandler={this.draggingEndedHandler}
+            onDragHandler={this.onDragHandler}
+            layoutEditing={this.state.layoutEditing}
+          />
+        </SidebarItem>
+        <SidebarItem>
+          <Button class='warning' onClick={this.switchEditingMode}>Switch editing mode</Button>
+          <Button class='primary' onClick={this.toggleSeoModal}>Edit SEO properties</Button>
+        </SidebarItem>
+        <SidebarItem>
+          <TemplatingTool components={this.state.components} />
+        </SidebarItem>
+        <SidebarItem>
+          {this.state.layoutEditing
+            ? <LayoutsManager cleanCanvas={this.cleanCanvas} currentLayout={this.state.selectedLayout} loadPage={this.loadPage} design={this.state.components} currentDesign={this.state.components} currentPage={this.props.currentPage} /> :
+            <PagesManager
+              selectedLayout={this.state.selectedLayout}
+              drawLayout={this.drawLayout}
+              loadLayout={this.loadLayout}
+              loadPage={this.loadPage}
+              design={this.state.components}
+              currentDesign={this.state.components}
+              currentPage={this.props.currentPage}
+              title={this.state.title}
+              image={this.state.image}
+              description={this.state.description}
+              type={this.state.type}
+              enabled={this.state.enabled}
+            />
+          }
+        </SidebarItem>
+      </React.Fragment>;
+    } else if (this.state.mode === 'template-mapping') {
+      sidebarContent = <React.Fragment>
+        <Button class='primary' onClick={() => { document.querySelector('#sidebar').style.width = '20%';
+        document.querySelector('#main').style.width='80%';
+        document.querySelector('#main').style.marginLeft='20%'; this.setState(prevState => ({ ...prevState, mode: 'building' })) }}>Building</Button>
+        <TemplatingTool components={this.state.components}/>
+      </React.Fragment>;
+    }
+
+
     return (
-      <Aux>
+      <React.Fragment>
         <div className="App">
           {this.state.showSeoModal ?
             <SeoEditor show={this.state.showSeoModal} modalClosed={this.toggleSeoModal} title={this.state.title} image={this.state.image} description={this.state.description} type={this.state.type} onSave={this.onSaveSeo} />
             : null}
           <Sidebar>
-            <Redeploy />
-            <h4>
-              Components
-        </h4>
-            <SidebarItem scrollable>
-              <ComponentsList
-                draggingEndedHandler={this.draggingEndedHandler}
-                onDragHandler={this.onDragHandler}
-                layoutEditing={this.state.layoutEditing}
-              />
-            </SidebarItem>
-            <SidebarItem>
-              <Button class='warning' onClick={this.switchEditingMode}>Switch editing mode</Button>
-              <Button class='primary' onClick={this.toggleSeoModal}>Edit SEO properties</Button>
-
-            </SidebarItem>
-            <SidebarItem>
-              {this.state.layoutEditing
-                ? <LayoutsManager cleanCanvas={this.cleanCanvas} currentLayout={this.state.selectedLayout} loadPage={this.loadPage} design={this.state.components} currentDesign={this.state.components} currentPage={this.props.currentPage} /> :
-                <PagesManager
-                  selectedLayout={this.state.selectedLayout}
-                  drawLayout={this.drawLayout}
-                  loadLayout={this.loadLayout}
-                  loadPage={this.loadPage}
-                  design={this.state.components}
-                  currentDesign={this.state.components}
-                  currentPage={this.props.currentPage}
-                  title={this.state.title}
-                  image={this.state.image}
-                  description={this.state.description}
-                  type={this.state.type}
-                  enabled={this.state.enabled}
-                />
-              }
-            </SidebarItem>
+            {sidebarContent}
           </Sidebar>
-
-          <div style={{ marginLeft: '20%', width: '80%' }}>
+          <div id='main' style={{ marginLeft: '20%', width: '80%' }}>
             <RenderedComponents
               contentComponents={this.state.components}
               layoutComponents={this.state.layoutComponents}
@@ -227,10 +245,8 @@ class PageRenderer extends Component {
               methods={this.methods}
             />
           </div>
-
         </div>
-
-      </Aux>
+      </React.Fragment>
     );
   }
 

@@ -84,24 +84,28 @@ const Page = (props) => {
             </Aux>
         )
     }
-    else if(!editing) {
+    else if (!editing) {
         page = LeanComponentRender(pageState.layout[0] ? pageState.layout[0] : [], 'l');
     }
     return (
-        <Aux>
+        <React.Fragment>
             <Head>
                 <title>{props.title}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             {editing ?
-                (<InitAuthState>
-                    <EditingPageRenderer currentPage={currentPage} />
-                </InitAuthState>) :
-                <Aux>
+                <React.Fragment>
+                    <InitAuthState>
+                        <EditingPageRenderer currentPage={currentPage} />
+                    </InitAuthState>
+                </React.Fragment>
+                :
+                <React.Fragment>
                     {page}
-                </Aux>
+                </React.Fragment>
+
             }
-        </Aux>
+        </React.Fragment>
     )
 };
 
@@ -116,7 +120,6 @@ export async function getStaticPaths() {
     }
 }
 export async function getStaticProps({ params }) {
-    console.log('revalidating!');
     let route = params.page ? params.page : '';
     const resp = await fetch("https://api.adventurouscoding.com/api/pages/" + encodeURIComponent('/' + route));
     if (!resp.ok) {
@@ -127,7 +130,6 @@ export async function getStaticProps({ params }) {
         }
     }
     const response = await resp.json();
-    console.log(response);
     const page = response.content;
     const layout = response.layout;
     const title = response.title;

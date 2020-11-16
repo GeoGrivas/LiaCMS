@@ -20,7 +20,8 @@ const componentsList={
     Content:dynamic(()=>import('../components/Content/Content')),
     Datepicker:dynamic(()=>import('../components/Datepicker/Datepicker')),
     Datepicker2:dynamic(()=>import('../components/Datepicker/Datepicker2'),{ssr:false}),
-    CarouselComponent:dynamic(()=>import('../components/Carousel/Carousel'))
+    CarouselComponent:dynamic(()=>import('../components/Carousel/Carousel')),
+    WrappedButton:dynamic(()=>import('../components/UI/Button/WrappedButton'))
 };
 
 

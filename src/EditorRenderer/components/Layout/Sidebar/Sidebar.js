@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './Sidebar.module.css';
 
 const sidebar=(props)=>(
-    <div className={classes.Sidebar}>
+    <div id='sidebar' className={classes.Sidebar}>
          {props.children}
       
     </div>

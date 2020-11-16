@@ -371,6 +371,24 @@ body {
   --danger-text-color:white;
   --danger-hover:#b62146;
 }
+.primary{
+  color:var(--primary);
+}
+.secondary{
+  color:var(--secondary);
+}
+.information{
+  color:var(--information);
+}
+.success{
+  color:var(--success);
+}
+.warning{
+  color:var(--warning);
+}
+.danger{
+  color:var(--danger);
+}
 .selected_component{
   border: 2px black dotted;
 }
@@ -401,7 +419,7 @@ body {
   display:block;
 }
 .border{
-  border:1px dashed black;
+  border:3px dashed black !important;
 }
 
 .ParamsEditorBody {

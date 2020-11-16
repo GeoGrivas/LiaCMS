@@ -10,6 +10,9 @@
     top: 30%;
     box-sizing: border-box;
     transition: all 0.3s ease-out;
+    color:black;
+    overflow-y: scroll;
+    max-height: 68vh;
 }
 
 @media (min-width: 600px) {
