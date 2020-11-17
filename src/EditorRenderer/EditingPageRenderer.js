@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import * as actions from '../components/Authentication/store/actions/index';
 import PagesManager from './components/PagesManager/PagesManager';
 import axios from 'axios';
-import Aux from '../hoc/Auxilary';
 import LayoutsManager from './components/LayoutsManager/LayoutsManager';
 import EditorLogin from './components/EditorLogin/EditorLogin';
 import Spinner from '../components/UI/Spinner/Spinner';
@@ -44,7 +43,6 @@ class PageRenderer extends Component {
   componentDidMount = () => {
     if (this.props.isAuthenticated) {
       this.initEmptyPage();
-
       this.setState(prevState => ({
         ...prevState,
         loading: false
@@ -91,6 +89,9 @@ class PageRenderer extends Component {
     });
   }
 
+  setComponents=(components)=>{
+      this.setState(prevState=>({...prevState,components:components}));
+  }
 
   onSaveSeo = (properties) => {
     this.setState((prevState) => ({ ...prevState, ...properties }));
@@ -223,7 +224,7 @@ class PageRenderer extends Component {
         <Button class='primary' onClick={() => { document.querySelector('#sidebar').style.width = '20%';
         document.querySelector('#main').style.width='80%';
         document.querySelector('#main').style.marginLeft='20%'; this.setState(prevState => ({ ...prevState, mode: 'building' })) }}>Building</Button>
-        <TemplatingTool components={this.state.components}/>
+        <TemplatingTool setComponents={this.setComponents} components={this.state.components}/>
       </React.Fragment>;
     }
 

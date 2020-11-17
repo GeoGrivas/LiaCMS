@@ -363,7 +363,8 @@ body {
   --primary-light: #9DA39A;
   --secondary: #54494B;
   --information: #DB2955;
-  --success: #54494B;
+  --success: #2cbe34;
+  --success-text-color:white;
   --warning: rgb(216, 216, 38);
   --warning-text-color:black;
   --warning-hover:rgb(197, 197, 36);

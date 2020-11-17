@@ -32,6 +32,10 @@
 .button.danger:hover{
     background-color: var(--danger-hover);
 }
+.button.success{
+    background-color: var(--success);
+    color:var(--success-text-color);
+}
 .button.warning{
     background-color:var(--warning);
     color:var(--warning-text-color);
