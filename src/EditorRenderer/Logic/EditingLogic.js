@@ -55,18 +55,16 @@ export const saveComponentEdit = (components, component, inputs) => {
 export const mapComponents = (components, mappings, information) => {
   const newComponents = cloneDeep(components);
   mappings.map(mapping => {
-    let field2 = null;
+    let field = null;
     for (let i = 0; i < mapping.info.length; i++) {
-      if (field2 === null) {
-        field2 = information[mapping.info[i]];
+      if (field === null) {
+        field = information[mapping.info[i]];
       } else {
-        field2 = field2[mapping.info[i]];
+        field = field[mapping.info[i]];
       }
     }
     let component = getElementFromId(newComponents, mapping.component[0]);
-    console.log(component);
-    component.params[mapping.component[1]].value = field2;
-    console.log(component);
+    component.params[mapping.component[1]].value = field;
   });
 
   return newComponents;

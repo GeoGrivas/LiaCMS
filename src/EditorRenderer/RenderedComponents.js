@@ -6,7 +6,7 @@ const RenderedComponents=(props)=>{
         return <ComponentRender key={block.id + 's'} block={block} methods={props.methods} />;
       });
     let layoutRenderedComponents=null;
-    if(!props.layoutEditing){
+    if(!props.layoutEditing && props.layoutComponents){
       layoutRenderedComponents = props.layoutComponents.map(block => {
         return <LeanComponentRender key={block.id + 's'} block={block} methods={props.methods} ignoreAppContainer={true} content={props.contentComponents.map(block => {
           return <ComponentRender key={block.id + 's'} block={block} methods={props.methods} />;

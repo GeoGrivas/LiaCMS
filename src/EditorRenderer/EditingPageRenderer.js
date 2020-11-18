@@ -43,10 +43,51 @@ class PageRenderer extends Component {
   componentDidMount = () => {
     if (this.props.isAuthenticated) {
       this.initEmptyPage();
-      this.setState(prevState => ({
-        ...prevState,
-        loading: false
-      }));
+      axios.get('https://api.adventurouscoding.com/api/management/pages/' + encodeURIComponent(this.props.currentPage), {
+        headers: {
+            'Authorization': `Bearer ${this.props.token}`
+        }
+    }).then(response => {
+        const page = response.data.content;
+        const layout = response.data.layout.content;
+        const layoutName = response.data.layoutName;
+        this.loadPage(JSON.parse(page),
+         { title: response.data.title, image: response.data.image, type: response.data.type, description: response.data.description },
+         JSON.parse(layout),
+         layoutName
+         );
+        //this.drawLayout(layout);
+
+    }).catch(err => {
+      this.loadPage( [{
+        component: "AppContainer",
+        importLocation: "/AppContainer/AppContainer",
+        children: [],
+        id: 'main',
+        type: 'container',
+        ignoreHover: true,
+        KeyUpHandler: this.onKeyUp,
+        KeyDownHandler: this.onKeyDown,
+        methods: this.methods
+      }],
+         { title:'', image: '', type: '', description: ''},
+         [{
+          component: "AppContainer",
+          importLocation: "/AppContainer/AppContainer",
+          children: [],
+          id: 'main',
+          type: 'container',
+          ignoreHover: true,
+          KeyUpHandler: this.onKeyUp,
+          KeyDownHandler: this.onKeyDown,
+          methods: this.methods
+        }],
+         ''
+         );
+        console.log("error" + err);
+    });
+     
+      
     } else {
       this.props.onTryAutoSignup();
       this.setState(prevState => ({ ...prevState, loading: false }));
@@ -135,9 +176,9 @@ class PageRenderer extends Component {
     };
     return (componentName + S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
   };
-  loadPage = (design, seoProps) => {
+  loadPage = (design, seoProps,layout,layoutName) => {
     this.addEditingEventsToLoad(design);
-    this.setState(prevState => ({ ...prevState, components: design, ...seoProps }));
+    this.setState(prevState => ({ ...prevState, components: design, ...seoProps,layoutComponents:layout,layoutName:layoutName,loading:false }));
   }
   loadLayout = (layoutName) => {
     axios.get('https://api.adventurouscoding.com/api/management/layouts/' + encodeURIComponent(layoutName)).then(response => {
@@ -215,6 +256,7 @@ class PageRenderer extends Component {
               description={this.state.description}
               type={this.state.type}
               enabled={this.state.enabled}
+              layoutName={this.state.layoutName}
             />
           }
         </SidebarItem>

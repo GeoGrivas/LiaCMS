@@ -44,7 +44,7 @@ const TemplatingTool = (props) => {
     const digDeep = (object, initKey) => {
         const keys = Object.keys(object);
         const keyBuild = initKey;
-        var result = keys.map((key,idx) => {
+        var result = keys.map((key, idx) => {
             var location = [...keyBuild, key].join(' ');
             if (typeof object[key] === 'object') {
                 return <div key={location} className={classes.step}>
@@ -52,7 +52,7 @@ const TemplatingTool = (props) => {
                     {digDeep(object[key], [...keyBuild, key])}
                 </div>
             } else {
-                return <div key={location+idx}>
+                return <div key={location + idx}>
                     <div>{location}</div>
                     <Button onClick={() => { setCurrentMapping({ ...currentMapping, info: [...keyBuild, key] }) }}>{object[key]}</Button>
                 </div>
@@ -67,7 +67,7 @@ const TemplatingTool = (props) => {
     const components = props.components;
     const digDeepComponents = (components) => {
 
-        var result = components.map((component,idx1) => {
+        var result = components.map((component, idx1) => {
 
             if (component.children && Array.isArray(component.children) && component.children.length > 0) {
                 return digDeepComponents(component.children);
@@ -75,12 +75,14 @@ const TemplatingTool = (props) => {
                 var params = null;
                 if (component.params) {
                     var paramkeys = Object.keys(component.params);
-                    params = paramkeys.map((paramKey,idx2) => <div key={idx2+'k'} onClick={() => { setCurrentMapping({ ...currentMapping, component: [component.id, paramKey] }) }}>{paramKey}</div>);
+                    params = paramkeys.map((paramKey, idx2) => <div key={idx2 + 'k'} onClick={() => { setCurrentMapping({ ...currentMapping, component: [component.id, paramKey, component.component] }) }}>{paramKey}</div>);
                 }
-                return <div key={idx1+'l'}>
-                    <div  onMouseOut={() => { removeBordersFromComponents(); }} onMouseOver={() => { addBordersToElementOnButtonHover(component.id) }}>
-                        {component.id}
-                        {params}
+                return <div key={idx1 + 'l'}>
+                    <div onMouseOut={() => { removeBordersFromComponents(); }} onMouseOver={() => { addBordersToElementOnButtonHover(component.id) }}>
+                        {component.component}
+                        <div className={classes.step}>
+                            {params}
+                        </div>
                     </div>
                 </div>
             }
@@ -95,25 +97,26 @@ const TemplatingTool = (props) => {
                 <input value={url} onChange={(e) => { const value = e.target.value; setUrl(value); }} />
                 <Button onClick={onFetchClicked}>Fetch data</Button>
                 <div className='row'>
-
-                    <div className='col-sm-6' style={{ maxHeight: '70vh', overflowY: 'scroll' }}>
+                    <div className={'col-sm-3 '+classes.scrollable} style={{ maxHeight: '55vh', overflowY: 'scroll' }}>
                         <React.Fragment>
                             {digDeepComponents(components)}
                         </React.Fragment>
                     </div>
-                    <div className='col-sm-6' style={{ maxHeight: '70vh', overflowY: 'scroll' }}>
+                    <div className={'col-sm-8 '+classes.scrollable} style={{ maxHeight: '55vh', overflowY: 'scroll' }}>
                         <React.Fragment>
                             {digDeep(information, [])}
                         </React.Fragment>
                     </div>
-                    <div className='col-sm-12'>
-                        <span>{currentMapping.component.join(' ')}</span> - <span>{currentMapping.info.join(' ')}</span> <Button class='success' onClick={onMappingsAdd}>Add</Button>
+                    <div className='col-sm-12 row' style={{position:'absolute',top:'68%',width:'100%'}}>
+                    <div className='col-sm-12' >
+                        <span>{currentMapping.component[2] + '-' + currentMapping.component[1]}</span> - <span>{currentMapping.info.join(' ')}</span> <Button class='success' onClick={onMappingsAdd}>Add</Button>
                     </div>
-                    <div className='col-sm-8'>
-                        {mappings.map((mapping, idx) => (<div> <span>{mapping.component.join(' ')}</span> - <span>{mapping.info.join(' ')}</span> <Button class='danger' onClick={() => { onMappingDelete(idx) }}>Delete</Button></div>))}
+                    <div className={'col-sm-8 '+classes.scrollable} style={ {maxHeight: '25vh',margin:'10px'}}>
+                        {mappings.map((mapping, idx) => (<div key={idx + '1'}> <span>{mapping.component[2] + '-' + mapping.component[1]}</span> - <span>{mapping.info.join(' ')}</span> <Button class='danger' onClick={() => { onMappingDelete(idx) }}>Delete</Button></div>))}
                     </div>
-                    <div className='col-sm-4'>
+                    <div className='col-sm-3'>
                         <Button class='warning' onClick={onMapComponentsClick}>Run mapping</Button>
+                    </div>
                     </div>
                 </div>
 

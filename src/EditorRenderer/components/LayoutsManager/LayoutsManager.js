@@ -22,6 +22,9 @@ class LayoutsManager extends Component {
                 this.loadPageHandler(pages[0]);
             else
                 this.props.cleanCanvas();
+        }).catch(err=>{
+            console.log(err);
+            this.props.cleanCanvas();
         });
     }
     loadPageHandler = (selectedPage) => {

@@ -27,8 +27,7 @@ class PagesManager extends Component {
                 }
             }).then(response => {
                 const layouts = response.data;
-                this.setState(prevState => ({ enabled: this.props.enabled, pages: pages, selectedPage: this.props.currentPage, currentPage: this.props.currentPage, layouts: layouts, selectedLayout: this.props.selectedLayout }));
-                this.loadPageHandler(this.props.currentPage);
+                this.setState(prevState => ({ currentLayout:this.props.layoutName,enabled: this.props.enabled, pages: pages, selectedPage: this.props.currentPage, currentPage: this.props.currentPage, layouts: layouts, selectedLayout: this.props.layoutName }));
             });
         });
     }
@@ -41,9 +40,9 @@ class PagesManager extends Component {
             const page = response.data.content;
             const layout = response.data.layout.content;
             const layoutName = response.data.layoutName;
-            this.props.loadPage(JSON.parse(page), { title: response.data.title, image: response.data.image, type: response.data.type, description: response.data.description });
+            this.props.loadPage(JSON.parse(page), { title: response.data.title, image: response.data.image, type: response.data.type, description: response.data.description },JSON.parse(layout));
             this.setState(prevState => ({ ...prevState, currentLayout: layoutName, selectedLayout: layoutName,enabled:response.data.enabled }));
-            this.props.drawLayout(layout);
+            //this.props.drawLayout(layout);
         }).catch(err => {
             this.initEmptyPage();
             console.log("error" + err);
