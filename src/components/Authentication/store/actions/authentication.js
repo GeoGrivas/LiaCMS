@@ -42,12 +42,7 @@ export const checkRefreshToken = (expirationTime) => {
 export const refershToken = () => {
     return dispatch=>{
     let url = '/api/authentication/refresh-token';
-    axios.get(url,
-        {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        })
+    axios.get(url)
         .then(response => {
             const expirationDate=new Date(response.data.expiration);
             localStorage.setItem('token', response.data.token);
@@ -86,10 +81,8 @@ export const auth = (email, password, isSignup) => {
                 const expirationDate=new Date(response.data.expiration);
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('expirationDate', expirationDate);
-                //localStorage.setItem('userId',response.data.localId);
                 dispatch(authSuccess(response.data.token));
                 dispatch(checkRefreshToken((expirationDate.getTime()-30 - new Date().getTime()) / 1000));
-                //dispatch(checkAuthTimeout(response.data.expiration));
             }
             ).catch(err => {
                 dispatch(authFail(err.response));

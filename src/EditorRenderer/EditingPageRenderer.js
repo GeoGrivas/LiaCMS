@@ -15,6 +15,7 @@ import RenderedComponents from './RenderedComponents';
 import Redeploy from './components/Redeploy/Redeploy';
 import Button from '../components/UI/Button/Button';
 import TemplatingTool from './components/TemplatingTool/TemplatingTool';
+import * as requests from './Requests';
 class PageRenderer extends Component {
 
   state = {
@@ -41,53 +42,16 @@ class PageRenderer extends Component {
     this.setState((prevState) => ({ ...prevState, showSeoModal: !prevState.showSeoModal }));
   }
   componentDidMount = () => {
-    if (this.props.isAuthenticated) {
-      this.initEmptyPage();
-      axios.get('https://api.adventurouscoding.com/api/management/pages/' + encodeURIComponent(this.props.currentPage), {
-        headers: {
-            'Authorization': `Bearer ${this.props.token}`
-        }
-    }).then(response => {
-        const page = response.data.content;
-        const layout = response.data.layout.content;
-        const layoutName = response.data.layoutName;
-        this.loadPage(JSON.parse(page),
-         { title: response.data.title, image: response.data.image, type: response.data.type, description: response.data.description },
-         JSON.parse(layout),
-         layoutName
-         );
-        //this.drawLayout(layout);
-
-    }).catch(err => {
-      this.loadPage( [{
-        component: "AppContainer",
-        importLocation: "/AppContainer/AppContainer",
-        children: [],
-        id: 'main',
-        type: 'container',
-        ignoreHover: true,
-        KeyUpHandler: this.onKeyUp,
-        KeyDownHandler: this.onKeyDown,
-        methods: this.methods
-      }],
-         { title:'', image: '', type: '', description: ''},
-         [{
-          component: "AppContainer",
-          importLocation: "/AppContainer/AppContainer",
-          children: [],
-          id: 'main',
-          type: 'container',
-          ignoreHover: true,
-          KeyUpHandler: this.onKeyUp,
-          KeyDownHandler: this.onKeyDown,
-          methods: this.methods
-        }],
-         ''
-         );
-        console.log("error" + err);
+    axios.interceptors.request.use(function (config) {
+      const token = localStorage.getItem('token');
+      config.headers.Authorization = token ? `Bearer ${token}` : '';
+      return config;
+    }, function (error) {
+      return Promise.reject(error);
     });
-     
-      
+    if (this.props.isAuthenticated) {
+     this.setState(prevState=>({...prevState,loading:false}));
+
     } else {
       this.props.onTryAutoSignup();
       this.setState(prevState => ({ ...prevState, loading: false }));
@@ -130,8 +94,8 @@ class PageRenderer extends Component {
     });
   }
 
-  setComponents=(components)=>{
-      this.setState(prevState=>({...prevState,components:components}));
+  setComponents = (components) => {
+    this.setState(prevState => ({ ...prevState, components: components }));
   }
 
   onSaveSeo = (properties) => {
@@ -176,19 +140,20 @@ class PageRenderer extends Component {
     };
     return (componentName + S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
   };
-  loadPage = (design, seoProps,layout,layoutName) => {
+  loadPage = (design, seoProps, layout, layoutName) => {
     this.addEditingEventsToLoad(design);
-    this.setState(prevState => ({ ...prevState, components: design, ...seoProps,layoutComponents:layout,layoutName:layoutName,loading:false }));
+    this.setState(prevState => ({ ...prevState, components: design, ...seoProps, layoutComponents: layout, layoutName: layoutName, loading: false }));
   }
   loadLayout = (layoutName) => {
-    axios.get('https://api.adventurouscoding.com/api/management/layouts/' + encodeURIComponent(layoutName)).then(response => {
-      const layout = response.data.content;
-      if (layout) {
-        this.drawLayout(layout);
-      }
-    }).catch(err => {
-      console.log("error" + err);
-    });
+    axios.get(requests.getLayout(layoutName))
+      .then(response => {
+        const layout = response.data.content;
+        if (layout) {
+          this.drawLayout(layout);
+        }
+      }).catch(err => {
+        console.log("error" + err);
+      });
   }
   drawLayout = (content) => {
     this.setState(prevState => ({ ...prevState, layoutComponents: JSON.parse(content) }));
@@ -244,6 +209,7 @@ class PageRenderer extends Component {
           {this.state.layoutEditing
             ? <LayoutsManager cleanCanvas={this.cleanCanvas} currentLayout={this.state.selectedLayout} loadPage={this.loadPage} design={this.state.components} currentDesign={this.state.components} currentPage={this.props.currentPage} /> :
             <PagesManager
+              shouldLoadPage={this.state.components.length < 2}
               selectedLayout={this.state.selectedLayout}
               drawLayout={this.drawLayout}
               loadLayout={this.loadLayout}
@@ -263,10 +229,12 @@ class PageRenderer extends Component {
       </React.Fragment>;
     } else if (this.state.mode === 'template-mapping') {
       sidebarContent = <React.Fragment>
-        <Button class='primary' onClick={() => { document.querySelector('#sidebar').style.width = '20%';
-        document.querySelector('#main').style.width='80%';
-        document.querySelector('#main').style.marginLeft='20%'; this.setState(prevState => ({ ...prevState, mode: 'building' })) }}>Building</Button>
-        <TemplatingTool setComponents={this.setComponents} components={this.state.components}/>
+        <Button class='primary' onClick={() => {
+          document.querySelector('#sidebar').style.width = '20%';
+          document.querySelector('#main').style.width = '80%';
+          document.querySelector('#main').style.marginLeft = '20%'; this.setState(prevState => ({ ...prevState, mode: 'building' }))
+        }}>Building</Button>
+        <TemplatingTool setComponents={this.setComponents} components={this.state.components} />
       </React.Fragment>;
     }
 
@@ -298,8 +266,7 @@ const mapStateToProps = state => {
   if (state)
     return {
       isAuthenticated: state.auth.token != null,
-      redirectPath: state.auth.authRedirectPath,
-      token: state.auth.token
+      redirectPath: state.auth.authRedirectPath
     };
   else
     return {};

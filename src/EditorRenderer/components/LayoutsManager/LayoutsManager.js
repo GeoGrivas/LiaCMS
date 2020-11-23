@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classes from './LayoutsManager.module.css';
 import axios from 'axios';
 import Button from '../../../components/UI/Button/Button';
+import * as requests from '../../Requests';
 class LayoutsManager extends Component {
     state = {
         currentPage: '',
@@ -11,11 +12,8 @@ class LayoutsManager extends Component {
     }
 
     componentDidMount = () => {
-        axios.get("https://api.adventurouscoding.com/api/management/layouts", {
-            headers: {
-                'Authorization': `bearer ${this.props.token}`
-            }
-        }).then(response => {
+        axios.get(requests.getLayouts())
+        .then(response => {
             const pages = response.data;
             this.setState(prevState => ({ ...prevState, pages: pages, selectedPage: pages[0], currentPage: this.props.currentPage }));
             if (Array.isArray(pages) && pages.length > 0)
@@ -28,11 +26,8 @@ class LayoutsManager extends Component {
         });
     }
     loadPageHandler = (selectedPage) => {
-        axios.get('https://api.adventurouscoding.com/api/management/layouts/' + encodeURIComponent(selectedPage), {
-            headers: {
-                'Authorization': `Bearer ${this.props.token}`
-            }
-        }).then(response => {
+        axios.get(requests.getLayout(selectedPage))
+        .then(response => {
             const page = response.data.content;
             this.props.loadPage(JSON.parse(page));
         }).catch(err => {
@@ -41,11 +36,7 @@ class LayoutsManager extends Component {
         });
     }
     removePageHandler = () => {
-        axios.delete('https://api.adventurouscoding.com/api/management/layouts/delete/' + encodeURIComponent(this.state.selectedPage), {
-            headers: {
-                'Authorization': `Bearer ${this.props.token}`
-            }
-        });
+        axios.delete(requests.deleteLayout(his.state.selectedPage));
         this.setState(prevState => {
             var idx = prevState.pages.indexOf(prevState.selectedPage);
             var currentPages = [...prevState.pages];
@@ -54,13 +45,10 @@ class LayoutsManager extends Component {
         });
     }
     savePageHandler = () => {
-        axios.put('https://api.adventurouscoding.com/api/management/layouts/put', { name: this.state.currentPage, content: JSON.stringify(this.props.design) }, {
-            headers: {
-                'Authorization': `Bearer ${this.props.token}`
-            }
-        }
-        ).then(response1 => {
-            axios.get("https://api.adventurouscoding.com/api/management/layouts").then(response2 => {
+        axios.put(requests.putLayout(), { name: this.state.currentPage, content: JSON.stringify(this.props.design) })
+        .then(response1 => {
+            axios.get(requests.getLayouts())
+            .then(response2 => {
                 const pages = response2.data;
                 this.setState(prevState => ({ ...prevState, pages: pages }));
             }).catch(err => {
