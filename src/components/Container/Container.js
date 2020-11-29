@@ -1,4 +1,5 @@
 import React from 'react';
+import classes from './Container.module.css';
 
  const Container=props=>(
      <div className={props.block.params.type?.value +" "+props.block.params?.backgroundColor.value}>

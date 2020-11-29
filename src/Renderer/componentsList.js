@@ -23,6 +23,7 @@ const componentsList={
     CarouselComponent:dynamic(()=>import('../components/Carousel/Carousel')),
     WrappedButton:dynamic(()=>import('../components/UI/Button/WrappedButton')),
     Link:dynamic(()=>import('../components/Link/Link')),
+    Section:dynamic(()=>import('../components/Section/Section'))
 };
 
 

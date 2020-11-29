@@ -31,7 +31,12 @@ const ComponentsList = (props) => {
             <h5>
                 Layout
             </h5>
-
+            <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
+                component: "Section",
+                importLocation: "/Section/Section",
+                children: [],
+                 type: "container"
+            }}>Section</DraggableItem>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
                 component: "Container",
                 importLocation: "/Container/Container",

@@ -1,0 +1,13 @@
+.Section{
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
+    border-bottom: 1px solid lightgray;
+    padding: 1em 0 1em 0;  
+    border-radius: 5px; 
+    min-height: 20px;
+    width: fit-content;
+    margin:1em auto 2em auto;
+    box-sizing: border-box;
+}
+
+
+
