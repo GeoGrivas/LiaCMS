@@ -41,7 +41,7 @@ export const checkRefreshToken = (expirationTime) => {
 }
 export const refershToken = () => {
     return dispatch=>{
-    let url = '/api/authentication/refresh-token';
+    let url = '/authentication/refresh-token';
     axios.get(url)
         .then(response => {
             const expirationDate=new Date(response.data.expiration);
@@ -72,9 +72,9 @@ export const auth = (email, password, isSignup) => {
             username: email,
             password: password
         }
-        let url = 'https://api.adventurouscoding.com/api/authentication/register';
+        let url = 'https://api.adventurouscoding.com/authentication/register';
         if (!isSignup) {
-            url = 'https://api.adventurouscoding.com/api/authentication/login';
+            url = 'https://api.adventurouscoding.com/authentication/login';
         }
         axios.post(url, authData)
             .then(response => {

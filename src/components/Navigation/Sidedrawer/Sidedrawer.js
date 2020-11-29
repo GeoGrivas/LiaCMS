@@ -15,7 +15,7 @@ const sidedrawer=(props)=>
         <Aux>
         <Backdrop show={props.open} click={props.close}/>
         <div className={attachedClasses.join(' ')}>
-            <Logo height='11%'></Logo>
+            <Logo value={props.logo} height='11%'></Logo>
             <nav onClick={props.close}>
             <NavigationItems navItems={props.navItems} isAuthenticated={props.isAuth}></NavigationItems>
             </nav>

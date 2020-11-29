@@ -371,24 +371,72 @@ body {
   --danger:#DB2955;
   --danger-text-color:white;
   --danger-hover:#b62146;
+  --light:white;
+  --dark:rgb(43, 43, 43);
+}
+
+.footer-item{
+  color:white;
+  opacity:0.8;
+  text-decoration: none;
+}
+.footer-item:hover{
+  opacity:1;
+}
+.bg-white{
+  background-color:white;
+}
+.bg-black{
+  background-color:black;
+}
+.light{
+  color:var(--light);
+}
+.dark{
+  color:var(--dark);
+}
+.bg-light{
+  background-color:var(--light);
+}
+.bg-dark{
+  background-color:var(--dark);
 }
 .primary{
   color:var(--primary);
 }
+.bg-primary{
+  background-color:var(--primary);
+}
+
 .secondary{
   color:var(--secondary);
+}
+.bg-secondary{
+  background-color:var(--secondary);
 }
 .information{
   color:var(--information);
 }
+.bg-information{
+  background-color:var(--information);
+}
 .success{
   color:var(--success);
+}
+.bg-success{
+  background-color:var(--success);
 }
 .warning{
   color:var(--warning);
 }
+.bg-warning{
+  background-color:var(--warning);
+}
 .danger{
   color:var(--danger);
+}
+.bg-danger{
+  background-color:var(--danger);
 }
 .selected_component{
   border: 2px black dotted;

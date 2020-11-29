@@ -25,28 +25,28 @@ function SeoEditor(props) {
                     <div >
                         <label>
                             Title
-        <input value={state.title} onChange={(e) => { setState((prevState) => ({ ...prevState, title: e.target.value })) }} />
+        <input value={state.title} onChange={(e) => { const value=e.target.value; setState((prevState) => ({ ...prevState, title: value })) }} />
                         </label>
                     </div>
                     <div>
 
                         <label>
                             Description
-        <input value={state.description} onChange={(e) => { setState((prevState) => ({ ...prevState, description: e.target.value })) }} />
+        <input value={state.description} onChange={(e) => { const value=e.target.value; setState((prevState) => ({ ...prevState, description: value })) }} />
                         </label>
                     </div>
                     <div>
 
                         <label>
                             Image
-        <input value={state.image} onChange={(e) => { setState((prevState) => ({ ...prevState, image: e.target.value })) }} />
+        <input value={state.image} onChange={(e) => { const value=e.target.value; setState((prevState) => ({ ...prevState, image: value })) }} />
                         </label>
                     </div>
                     <div>
 
                         <label>
                             Type
-        <input value={state.type} onChange={(e) => { setState((prevState) => ({ ...prevState, type: e.target.value })) }} />
+        <input value={state.type} onChange={(e) => { const value=e.target.value; setState((prevState) => ({ ...prevState, type: value })) }} />
                         </label>
                     </div>
                     <div>

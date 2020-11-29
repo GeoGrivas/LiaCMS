@@ -7,7 +7,6 @@ import PagesManager from './components/PagesManager/PagesManager';
 import axios from 'axios';
 import LayoutsManager from './components/LayoutsManager/LayoutsManager';
 import EditorLogin from './components/EditorLogin/EditorLogin';
-import Spinner from '../components/UI/Spinner/Spinner';
 import SeoEditor from './components/SeoEditor/SeoEditor';
 import { toggleBordersOfComponents, DraggingStarted, removeComponent, saveComponentEdit } from './Logic/EditingLogic';
 import ComponentsList from './components/componentsList/componentsList2';
@@ -16,30 +15,26 @@ import Redeploy from './components/Redeploy/Redeploy';
 import Button from '../components/UI/Button/Button';
 import TemplatingTool from './components/TemplatingTool/TemplatingTool';
 import * as requests from './Requests';
+import Page from './Page';
+import cloneDeep from 'lodash.clonedeep';
+import PageLoading from '../components/UI/PageLoading/PageLoading';
 class PageRenderer extends Component {
 
   state = {
-    components: [],
-    layoutComponents: [],
-    layoutEditing: false,
-    selectedLayout: '',
-    loading: true,
-    title: '',
-    description: '',
-    type: '',
-    image: '',
-    enabled: false,
-    mode: 'building'
+    page: new Page(),
+    mode: 'building',
+    loading:true
   }
   showSeoModal = false;
   draggingComponent = null;
   eventsEnabled = true;
   dragging = false;
   switchEditingMode = () => {
-    this.setState((prevState) => ({ ...prevState, layoutEditing: !prevState.layoutEditing }));
+    this.setState((prevState) => ({ layoutEditing: !prevState.layoutEditing }));
+    console.log(this.state.page);
   }
   toggleSeoModal = () => {
-    this.setState((prevState) => ({ ...prevState, showSeoModal: !prevState.showSeoModal }));
+    this.setState((prevState) => ({ showSeoModal: !prevState.showSeoModal }));
   }
   componentDidMount = () => {
     axios.interceptors.request.use(function (config) {
@@ -50,7 +45,7 @@ class PageRenderer extends Component {
       return Promise.reject(error);
     });
     if (this.props.isAuthenticated) {
-     this.setState(prevState=>({...prevState,loading:false}));
+      this.setState(prevState => ({ ...prevState, loading: false }));
 
     } else {
       this.props.onTryAutoSignup();
@@ -60,17 +55,8 @@ class PageRenderer extends Component {
   initEmptyPage = () => {
     this.setState(prevState => {
       return {
-        ...prevState, components: [{
-          component: "AppContainer",
-          importLocation: "/AppContainer/AppContainer",
-          children: [],
-          id: 'main',
-          type: 'container',
-          ignoreHover: true,
-          KeyUpHandler: this.onKeyUp,
-          KeyDownHandler: this.onKeyDown,
-          methods: this.methods
-        }]
+        ...prevState,
+        page: new Page()
       }
     });
   }
@@ -78,38 +64,37 @@ class PageRenderer extends Component {
   cleanCanvas = () => {
     this.setState(prevState => {
       return {
-        ...prevState, components: [{
-          component: "AppContainer",
-          importLocation: "/AppContainer/AppContainer",
-          children: [],
-          id: 'main',
-          type: 'container',
-          ignoreHover: true,
-          KeyUpHandler: this.onKeyUp,
-          KeyDownHandler: this.onKeyDown,
-          methods: this.methods
-        }],
+        ...prevState, components: [],
         layoutComponents: []
       }
     });
   }
 
-  setComponents = (components) => {
-    this.setState(prevState => ({ ...prevState, components: components }));
-  }
 
   onSaveSeo = (properties) => {
-    this.setState((prevState) => ({ ...prevState, ...properties }));
+    let page=cloneDeep(this.state.page);
+    page={...page,...properties};
+    this.setState((prevState) => ({ ...prevState, page:page }));
   }
   onDragOver = (event, component) => {
     event.preventDefault();
     event.stopPropagation();
     const isShiftPressed = event.shiftKey;
     toggleBordersOfComponents(this.dragging);
-    const result = DraggingStarted(this.draggingComponent, component, this.state.components, isShiftPressed);
-    if (result !== null) {
-      this.setState((prevState) => ({ components: result }));
+    if (this.state.layoutEditing) {
+      const result = DraggingStarted(this.draggingComponent, component, this.state.page.layout.content, isShiftPressed);
+      if (result !== null) {
+        let tempPage = cloneDeep(this.state.page);
+        tempPage.layout.content = result;
+        this.setState((prevState) => ({ page: tempPage }));
+      }
+    } else {
+      const result = DraggingStarted(this.draggingComponent, component, this.state.page.content, isShiftPressed);
+      if (result !== null) {
+        this.setState((prevState) => ({ page: { ...prevState.page, content: result } }));
+      }
     }
+
   }
   onDragHandler = (event, component) => {
     this.dragging = true;
@@ -126,13 +111,34 @@ class PageRenderer extends Component {
   onEditSavedHandler = (event, component) => {
     event.preventDefault();
     toggleBordersOfComponents(this.dragging);
-    const newComponents = saveComponentEdit(this.state.components, component, event.target.elements);
-    this.setState({ components: newComponents });
+    let page = cloneDeep(this.state.page);
+    if(this.state.layoutEditing)
+    {
+      const newComponents = saveComponentEdit(this.state.page.layout.content, component, event.target.elements);
+      page.layout.content=newComponents;
+    }else{
+      const newComponents = saveComponentEdit(this.state.page.content, component, event.target.elements);
+      page.content=newComponents;
+    }
+    this.setState({page:page  });
     event.target.focus();
   }
+  setComponents=(components)=>{
+    let page = cloneDeep(this.state.page);
+    page.content=components;
+    this.setState({page:page  });
+  }
   onRemoveClickedHandler = (component) => {
-    const newComponents = removeComponent(component, this.state.components);
-    this.setState({ components: newComponents });
+    let page = cloneDeep(this.state.page);
+    if(this.state.layoutEditing)
+    {
+      const newComponents = removeComponent(component, this.state.page.layout.content);
+      page.layout.content=newComponents;
+    }else{
+      const newComponents = removeComponent(component, this.state.page.content);
+      page.content=newComponents;
+    }
+    this.setState({page:page  });
   }
   idGenerator = (componentName) => {
     var S4 = function () {
@@ -140,36 +146,26 @@ class PageRenderer extends Component {
     };
     return (componentName + S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
   };
-  loadPage = (design, seoProps, layout, layoutName) => {
-    this.addEditingEventsToLoad(design);
-    this.setState(prevState => ({ ...prevState, components: design, ...seoProps, layoutComponents: layout, layoutName: layoutName, loading: false }));
+  loadPage = (page) => {
+    this.setState(prevState => ({ ...prevState, page: page }));
   }
   loadLayout = (layoutName) => {
     axios.get(requests.getLayout(layoutName))
       .then(response => {
         const layout = response.data.content;
         if (layout) {
-          this.drawLayout(layout);
+          let page = cloneDeep(this.state.page);
+          page.layoutName=layoutName;
+          page.layout.name=response.data.name;
+          page.layout.content=JSON.parse(response.data.content);
+          this.setState(prevState=>({page:page}));
         }
       }).catch(err => {
         console.log("error" + err);
       });
   }
-  drawLayout = (content) => {
-    this.setState(prevState => ({ ...prevState, layoutComponents: JSON.parse(content) }));
-  }
-  addEditingEventsToLoad = (components) => {
-    if (Array.isArray(components)) {
-      for (let i = 0; i < components.length; i++) {
-        components[i].methods = this.methods;
-        if (components[i].children && components[i].children.length > 0) {
-          this.addEditingEventsToLoad(components[i].children);
-        }
-      }
-    } else {
-      components.methods = this.methods;
-    }
-  };
+
+
   methods = {
     onRemove: this.onRemoveClickedHandler,
     onDragStart: this.onDragHandler,
@@ -179,7 +175,7 @@ class PageRenderer extends Component {
   }
   render() {
     if (this.state.loading) {
-      return <Spinner />
+      return <PageLoading />
     }
     if (!this.props.isAuthenticated) {
       return <EditorLogin />
@@ -203,26 +199,24 @@ class PageRenderer extends Component {
           <Button class='primary' onClick={this.toggleSeoModal}>Edit SEO properties</Button>
         </SidebarItem>
         <SidebarItem>
-          <TemplatingTool components={this.state.components} />
-        </SidebarItem>
-        <SidebarItem>
           {this.state.layoutEditing
-            ? <LayoutsManager cleanCanvas={this.cleanCanvas} currentLayout={this.state.selectedLayout} loadPage={this.loadPage} design={this.state.components} currentDesign={this.state.components} currentPage={this.props.currentPage} /> :
+            ? <LayoutsManager
+              initEmptyPage={this.initEmptyPage}
+              currentLayout={this.state.selectedLayout}
+              loadLayout={this.loadLayout}
+              design={this.state.page.layout.content}
+              currentDesign={this.state.page.layout.content}
+              currentLayout={this.state.page.layoutName}
+            /> :
             <PagesManager
-              shouldLoadPage={this.state.components.length < 2}
+              shouldLoadPage={this.state.page.content[0].children.length < 1}
               selectedLayout={this.state.selectedLayout}
               drawLayout={this.drawLayout}
               loadLayout={this.loadLayout}
               loadPage={this.loadPage}
-              design={this.state.components}
-              currentDesign={this.state.components}
               currentPage={this.props.currentPage}
-              title={this.state.title}
-              image={this.state.image}
-              description={this.state.description}
-              type={this.state.type}
-              enabled={this.state.enabled}
-              layoutName={this.state.layoutName}
+              page={this.state.page}
+              initEmptyPage={this.initEmptyPage}
             />
           }
         </SidebarItem>
@@ -234,7 +228,7 @@ class PageRenderer extends Component {
           document.querySelector('#main').style.width = '80%';
           document.querySelector('#main').style.marginLeft = '20%'; this.setState(prevState => ({ ...prevState, mode: 'building' }))
         }}>Building</Button>
-        <TemplatingTool setComponents={this.setComponents} components={this.state.components} />
+        <TemplatingTool setComponents={this.setComponents} components={this.state.page.content} />
       </React.Fragment>;
     }
 
@@ -243,15 +237,20 @@ class PageRenderer extends Component {
       <React.Fragment>
         <div className="App">
           {this.state.showSeoModal ?
-            <SeoEditor show={this.state.showSeoModal} modalClosed={this.toggleSeoModal} title={this.state.title} image={this.state.image} description={this.state.description} type={this.state.type} onSave={this.onSaveSeo} />
+            <SeoEditor show={this.state.showSeoModal} modalClosed={this.toggleSeoModal}
+              title={this.state.page.title}
+              image={this.state.page.image}
+              description={this.state.page.description}
+              type={this.state.page.type}
+              onSave={this.onSaveSeo} />
             : null}
           <Sidebar>
             {sidebarContent}
           </Sidebar>
           <div id='main' style={{ marginLeft: '20%', width: '80%' }}>
             <RenderedComponents
-              contentComponents={this.state.components}
-              layoutComponents={this.state.layoutComponents}
+              contentComponents={this.state.layoutEditing?this.state.page.layout.content:this.state.page.content}
+              layoutComponents={this.state.page.layout.content}
               layoutEditing={this.state.layoutEditing}
               methods={this.methods}
             />

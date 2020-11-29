@@ -12,7 +12,12 @@ const ComponentsList = (props) => {
                 component: "ResponsiveNavigation",
                 importLocation: "/Navigation/ResponsiveNavigation",
                 type: 'container',
+                params: {
+                     logo: { value: "My page" },
+                     backgroundColor: { value: '', type: 'select', options: ['', 'bg-white', 'bg-black', 'bg-primary', 'bg-secondary', 'bg-warning', 'bg-light', 'bg-dark', 'bg-danger', 'bg-success', 'bg-information'] }
+                    },
                 children: []
+      
             }}>Responsive Navigation 1</DraggableItem>
 
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
@@ -31,6 +36,10 @@ const ComponentsList = (props) => {
                 component: "Container",
                 importLocation: "/Container/Container",
                 children: [],
+                params: {
+                    backgroundColor: { value: '', type: 'select', options: ['', 'bg-white', 'bg-black', 'bg-primary', 'bg-secondary', 'bg-warning', 'bg-light', 'bg-dark', 'bg-danger', 'bg-success', 'bg-information'] },
+                    type: { value: 'container', type: 'select', options: ['container', 'container-fluid'] }
+                },
                 type: "container"
             }}>Container</DraggableItem>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
@@ -39,7 +48,9 @@ const ComponentsList = (props) => {
                 children: [],
                 params: {
                     alignItems: { value: '', type: 'select', options: ['', 'center', 'flex-start', 'flex-end', 'space-around', 'space-between', 'stretch'] },
-                    justifyContent: { value: '', type: 'select', options: ['', 'center', 'flex-start', 'flex-end', 'space-around', 'space-between', 'stretch'] }
+                    justifyContent: { value: '', type: 'select', options: ['', 'center', 'flex-start', 'flex-end', 'space-around', 'space-between', 'stretch'] },
+                    backgroundColor: { value: '', type: 'select', options: ['', 'bg-white', 'bg-black', 'bg-primary', 'bg-secondary', 'bg-warning', 'bg-light', 'bg-dark', 'bg-danger', 'bg-success', 'bg-information'] }
+
                 },
                 type: "container"
             }}>Row</DraggableItem>
@@ -50,7 +61,8 @@ const ComponentsList = (props) => {
                 params: {
                     breakPoint: { value: 'md', type: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
                     span: { value: '', type: 'select', options: ['12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', ''] },
-                    textAlign: { value: '', type: 'select', options: ['', 'center', 'start', 'end', 'left', 'right'] }
+                    textAlign: { value: '', type: 'select', options: ['', 'center', 'start', 'end', 'left', 'right'] },
+                    backgroundColor: { value: '', type: 'select', options: ['', 'bg-white', 'bg-black', 'bg-primary', 'bg-secondary', 'bg-warning', 'bg-light', 'bg-dark', 'bg-danger', 'bg-success', 'bg-information'] }
                 },
                 children: [],
                 type: "container"
@@ -120,6 +132,15 @@ const ComponentsList = (props) => {
                 type: 'container',
                 children: [],
             }}>List Item</DraggableItem>
+            <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
+                component: "Link",
+                importLocation: "/Link/Link",
+                params: {
+                    url: { value: "/" },
+                    text: { value: "Default Link" },
+                    style: { value: '', type: 'select', options: ['', 'footer-item', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
+                }
+            }}>Link</DraggableItem>
         </div>
         <div>
             <h5>

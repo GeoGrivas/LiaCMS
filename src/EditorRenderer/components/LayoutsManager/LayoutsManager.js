@@ -4,6 +4,7 @@ import classes from './LayoutsManager.module.css';
 import axios from 'axios';
 import Button from '../../../components/UI/Button/Button';
 import * as requests from '../../Requests';
+import Page from '../../Page';
 class LayoutsManager extends Component {
     state = {
         currentPage: '',
@@ -15,25 +16,19 @@ class LayoutsManager extends Component {
         axios.get(requests.getLayouts())
         .then(response => {
             const pages = response.data;
-            this.setState(prevState => ({ ...prevState, pages: pages, selectedPage: pages[0], currentPage: this.props.currentPage }));
+            this.setState(prevState => ({ ...prevState, pages: pages, selectedPage: this.props.currentLayout, currentPage: this.props.currentLayout }));
             if (Array.isArray(pages) && pages.length > 0)
-                this.loadPageHandler(pages[0]);
+                this.loadPageHandler(this.props.currentLayout);
             else
-                this.props.cleanCanvas();
+                this.props.initEmptyPage();
         }).catch(err=>{
             console.log(err);
-            this.props.cleanCanvas();
+            this.props.initEmptyPage();
         });
     }
     loadPageHandler = (selectedPage) => {
-        axios.get(requests.getLayout(selectedPage))
-        .then(response => {
-            const page = response.data.content;
-            this.props.loadPage(JSON.parse(page));
-        }).catch(err => {
-            this.initEmptyPage();
-            console.log("error" + err);
-        });
+        this.props.loadLayout(selectedPage);
+      
     }
     removePageHandler = () => {
         axios.delete(requests.deleteLayout(his.state.selectedPage));

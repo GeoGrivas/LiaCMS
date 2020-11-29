@@ -26,7 +26,7 @@ const Page = (props) => {
     useEffect(() => {
         if (isUpdate.current) {
             if (pageState.currentPage !== currentPage && !props.notFound) {
-                axios.get('https://api.adventurouscoding.com/api/pages/' + encodeURIComponent(currentPage)).then(response => {
+                axios.get('https://api.adventurouscoding.com/pages/' + encodeURIComponent(currentPage)).then(response => {
                     setPageState(
                         {
                             page: JSON.parse(response.data.content),
@@ -112,7 +112,7 @@ const Page = (props) => {
 export default Page;
 
 export async function getStaticPaths() {
-    const response = await (await fetch("https://api.adventurouscoding.com/api/pages")).json();
+    const response = await (await fetch("https://api.adventurouscoding.com/pages")).json();
     const paths = response.map(path => ({ params: { page: (decodeURIComponent(path).substring(1).split('/')) }, }));
     return {
         paths,
@@ -121,7 +121,7 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps({ params }) {
     let route = params.page ? params.page : '';
-    const resp = await fetch("https://api.adventurouscoding.com/api/pages/" + encodeURIComponent('/' + route));
+    const resp = await fetch("https://api.adventurouscoding.com/pages/" + encodeURIComponent('/' + route));
     if (!resp.ok) {
         if (resp.status >= 400 < 500) {
             return { props: { notFound: true } };

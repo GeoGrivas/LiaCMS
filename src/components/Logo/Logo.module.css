@@ -1,5 +1,5 @@
 .Logo{
-    background-color: white;
+    background-color: transparent;
     padding: 8px;
     height: 100%;
     box-sizing: border-box;
@@ -7,4 +7,8 @@
 }
 .Logo img{
     height: 100%;
+}
+
+.Logo h2{
+    height:100%;
 }

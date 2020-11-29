@@ -3,6 +3,7 @@ import Button from '../../../components/UI/Button/Button';
 import axios from 'axios';
 import classes from './TemplatingTool.module.css';
 import { removeBordersFromComponents, mapComponents } from '../../Logic/EditingLogic';
+import TemplatesManager from './TemplatesManager/TemplatesManager';
 const TemplatingTool = (props) => {
     const [information, setInformation] = useState();
     const [url, setUrl] = useState('');
@@ -64,6 +65,13 @@ const TemplatingTool = (props) => {
         const result = mapComponents(components, mappings, information);
         props.setComponents(result);
     }
+    const currentTemplate=()=>{
+        console.log(mappings);
+        return mappings;
+    }
+    const loadTemplateMappings=(mappings)=>{
+        setMappings(mappings);
+    }
     const components = props.components;
     const digDeepComponents = (components) => {
 
@@ -111,11 +119,12 @@ const TemplatingTool = (props) => {
                     <div className='col-sm-12' >
                         <span>{currentMapping.component[2] + '-' + currentMapping.component[1]}</span> - <span>{currentMapping.info.join(' ')}</span> <Button class='success' onClick={onMappingsAdd}>Add</Button>
                     </div>
-                    <div className={'col-sm-8 '+classes.scrollable} style={ {maxHeight: '25vh',margin:'10px'}}>
+                    <div className={'col-sm-7 '+classes.scrollable} style={ {maxHeight: '25vh',margin:'10px'}}>
                         {mappings.map((mapping, idx) => (<div key={idx + '1'}> <span>{mapping.component[2] + '-' + mapping.component[1]}</span> - <span>{mapping.info.join(' ')}</span> <Button class='danger' onClick={() => { onMappingDelete(idx) }}>Delete</Button></div>))}
                     </div>
-                    <div className='col-sm-3'>
+                    <div className='col-sm-4'>
                         <Button class='warning' onClick={onMapComponentsClick}>Run mapping</Button>
+                        <TemplatesManager loadTemplateMappings={loadTemplateMappings} getCurrentTemplate={currentTemplate}/>
                     </div>
                     </div>
                 </div>

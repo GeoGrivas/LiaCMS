@@ -54,6 +54,7 @@ export const saveComponentEdit = (components, component, inputs) => {
 
 export const mapComponents = (components, mappings, information) => {
   const newComponents = cloneDeep(components);
+  console.log(mappings);
   mappings.map(mapping => {
     let field = null;
     for (let i = 0; i < mapping.info.length; i++) {
@@ -104,6 +105,7 @@ export const removeComponent = (component, components) => {
 }
 
 export const DraggingStarted = (draggingComponent, component, components, ignoreContainer) => {
+  console.log(components);
   let newComponents = cloneDeep(components);
   component = getCopy(newComponents, component);
   const componentParent = getParent(newComponents, component);
