@@ -3,7 +3,7 @@
     background-origin: border-box;
     display: block;
     width:100%;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .NavigationItem a{
@@ -23,7 +23,6 @@
     margin-left: 10px;
     display: flex;
     width: auto;
-
     align-items:center;
 }
 
@@ -31,17 +30,15 @@
     color:black;
     text-decoration: none;
     padding: 16px 10px;
-    border-bottom: 8px solid transparent;
+    border-bottom: 3px solid transparent;
 
 }
 .NavigationItem a:hover{
-    text-decoration: underline;
-    text-decoration-style: solid;
-    text-decoration-color: lightblue;
+   border-bottom: 3px solid lightblue;
 }
 .NavigationItem a:active,
 .NavigationItem a.active{
-    color:lightblue;
-    text-decoration: none;
+    color:black;
+    border-bottom: 3px solid lightblue;
 }
 }

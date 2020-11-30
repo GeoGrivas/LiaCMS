@@ -90,10 +90,18 @@ const ComponentsList = (props) => {
                 component: "Paragraph",
                 importLocation: "/Paragraph/Paragraph",
                 params: {
-                    text: { value: "alt-click to edit props paragraph" },
+                    text: { value: "alt-click to edit props paragraph",type:'textarea' },
                     style: { value: '', type: 'select', options: ['', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
                 },
             }}>Paragraph</DraggableItem>
+             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
+                component: "SimpleText",
+                importLocation: "/SimpleText/SimpleText",
+                params: {
+                    text: { value: "alt-click to edit props SimpleText",type:'textarea' },
+                    style: { value: '', type: 'select', options: ['', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
+                },
+            }}>SimpleText</DraggableItem>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
                 component: "WrappedButton",
                 importLocation: "/UI/Button/WrappedButton",

@@ -10,7 +10,9 @@ const EditorInput=(props)=>{
             return (<div className={classes.InputContainer}><label className={classes.Label}>{label}</label><select className={classes.Input+' '+classes.Select} name={props.name} defaultValue={props.input.value}>
                 {opts}
             </select></div>);
-    
+        case 'textarea':
+            return(<div className={classes.InputContainer}><label className={classes.Label}>{label}</label> <textarea className={classes.Input} name={props.name} defaultValue={props.input.value} /></div>);
+
         default:
             return(<div className={classes.InputContainer}><label className={classes.Label}>{label}</label> <input className={classes.Input} name={props.name} defaultValue={props.input.value} /></div>);
     }
