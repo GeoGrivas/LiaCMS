@@ -35,6 +35,9 @@ const ComponentsList = (props) => {
                 component: "Section",
                 importLocation: "/Section/Section",
                 children: [],
+                params: {
+                     printable: { value: 'no', type: 'select', options: ['no', 'yes'] }
+                },
                  type: "container"
             }}>Section</DraggableItem>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
