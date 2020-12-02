@@ -6,13 +6,12 @@ const Redeploy = (props) => {
     const [loading, setLoading] = useState(false);
     const onRedeployCliked = () => {
         setLoading(true);
-        /*
-        axios.get('https://api.vercel.com/v1/integrations/deploy/QmVsq6DCBptN6PsZjdRqAhhmSvfY7URqan6m1KTC65JSJH/OPLjPH4YGi').then(resp=>{
+        axios.get('https://api.vercel.com/v1/integrations/deploy/QmVsq6DCBptN6PsZjdRqAhhmSvfY7URqan6m1KTC65JSJH/OPLjPH4YGi').then(resp => {
             setLoading(false);
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err);
         });
-        */
+
 
     }
     return <div>
