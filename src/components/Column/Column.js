@@ -1,7 +1,9 @@
 import React from 'react';
 import classes from './Column.module.css';
 const column = (props) =>{
-        let columClass =' col-'+props.block.params.breakPoint.value;
+        let breakPoint=props.block.params.breakPoint.value;
+
+        let columClass =' col'+(breakPoint!=''?"-"+breakPoint:'');
         if(props.block.params.span.value)
         {
                 columClass+='-'+props.block.params.span.value;

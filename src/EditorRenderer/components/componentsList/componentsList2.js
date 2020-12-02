@@ -13,11 +13,11 @@ const ComponentsList = (props) => {
                 importLocation: "/Navigation/ResponsiveNavigation",
                 type: 'container',
                 params: {
-                     logo: { value: "My page" },
-                     backgroundColor: { value: '', type: 'select', options: ['', 'bg-white', 'bg-black', 'bg-primary', 'bg-secondary', 'bg-warning', 'bg-light', 'bg-dark', 'bg-danger', 'bg-success', 'bg-information'] }
-                    },
+                    logo: { value: "My page" },
+                    backgroundColor: { value: '', type: 'select', options: ['', 'bg-white', 'bg-black', 'bg-primary', 'bg-secondary', 'bg-warning', 'bg-light', 'bg-dark', 'bg-danger', 'bg-success', 'bg-information'] }
+                },
                 children: []
-      
+
             }}>Responsive Navigation 1</DraggableItem>
 
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
@@ -36,9 +36,9 @@ const ComponentsList = (props) => {
                 importLocation: "/Section/Section",
                 children: [],
                 params: {
-                     printable: { value: 'no', type: 'select', options: ['no', 'yes'] }
+                    printable: { value: 'no', type: 'select', options: ['no', 'yes'] }
                 },
-                 type: "container"
+                type: "container"
             }}>Section</DraggableItem>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
                 component: "Container",
@@ -67,7 +67,7 @@ const ComponentsList = (props) => {
                 component: "Column",
                 importLocation: "/Column/Column",
                 params: {
-                    breakPoint: { value: 'md', type: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
+                    breakPoint: { value: 'md', type: 'select', options: ['','xs', 'sm', 'md', 'lg', 'xl'] },
                     span: { value: '', type: 'select', options: ['12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', ''] },
                     textAlign: { value: '', type: 'select', options: ['', 'center', 'start', 'end', 'left', 'right'] },
                     backgroundColor: { value: '', type: 'select', options: ['', 'bg-white', 'bg-black', 'bg-primary', 'bg-secondary', 'bg-warning', 'bg-light', 'bg-dark', 'bg-danger', 'bg-success', 'bg-information'] }
@@ -93,15 +93,15 @@ const ComponentsList = (props) => {
                 component: "Paragraph",
                 importLocation: "/Paragraph/Paragraph",
                 params: {
-                    text: { value: "alt-click to edit props paragraph",type:'textarea' },
+                    text: { value: "alt-click to edit props paragraph", type: 'textarea' },
                     style: { value: '', type: 'select', options: ['', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
                 },
             }}>Paragraph</DraggableItem>
-             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
+            <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
                 component: "SimpleText",
                 importLocation: "/SimpleText/SimpleText",
                 params: {
-                    text: { value: "alt-click to edit props SimpleText",type:'textarea' },
+                    text: { value: "alt-click to edit props SimpleText", type: 'textarea' },
                     style: { value: '', type: 'select', options: ['', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
                 },
             }}>SimpleText</DraggableItem>
@@ -128,7 +128,13 @@ const ComponentsList = (props) => {
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
                 component: "Image1",
                 importLocation: "/Card/Image1/Image1",
-                params: { src: { value: "https://dummyimage.com/300.png/09f/fff" }, alt: { value: 'an image!' }, height: { value: '300px' }, width: { value: '300px' } }
+                params: {
+                    src: { value: "https://dummyimage.com/300.png/09f/fff" },
+                    alt: { value: 'an image!' },
+                    height: { value: '300px' },
+                    width: { value: '300px' },
+                    style: { value: '', type: 'select', options: ['', 'rounded', 'circle'] }
+                }
             }}>Image1</DraggableItem>
 
 

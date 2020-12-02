@@ -12,6 +12,8 @@
     box-sizing: border-box;
     display: block;
     color:black;
+    
+    border-bottom: 8px solid transparent;
 }
 .NavigationItem a:active,
 .NavigationItem a.active{
@@ -24,6 +26,7 @@
     display: flex;
     width: auto;
     align-items:center;
+    
 }
 
 .NavigationItem a{
