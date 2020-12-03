@@ -7,7 +7,7 @@ import InitAuthState from '../src/components/Authentication/InitAuthState';
 import componentsList from '../src/Renderer/componentsList';
 import axios from 'axios';
 import DefaultErrorPage from 'next/error';
-import Spinner from '../src/components/UI/Spinner/Spinner';
+import PageLoading from '../src/components/UI/PageLoading/PageLoading';
 const Page = (props) => {
 
     const router = useRouter();
@@ -73,7 +73,7 @@ const Page = (props) => {
     }
     let page = null;
     if (router.isFallback) {
-        page = (<Spinner />);
+        page = (<PageLoading />);
     } else if (props.notFound && !editing) {
         return (
             <Aux>
