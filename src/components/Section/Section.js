@@ -21,14 +21,14 @@ const Section = (props) => {
                 }}>
                     <Button class={"primary"} onClick={() => { onPrintClicked(id) }}>Print this</Button>
                 </div>
-                <section id={id} className={classes.Section}>
+                <section id={id} className={classes.Section +" "+props.block.params.backgroundColor?.value}>
                     {props.children}
                 </section>
             </div>);
     } else {
 
         return (
-            <section className={classes.Section}>
+            <section className={classes.Section +" "+props.block.params?.backgroundColor?.value}>
                 {props.children}
             </section>
         );

@@ -1,0 +1,29 @@
+.Hr{
+}
+.Hr.primary{
+    border-color: var(--primary);
+}
+.Hr.primary:hover{
+    background-color: var(--primary-hover);
+}
+.Hr.primary:focus{
+    outline-color: var(--primary-outline);
+}
+.Hr.danger{
+    background-color:var(--danger);
+    color:var(--danger-text-color);
+}
+.Hr.danger:hover{
+    background-color: var(--danger-hover);
+}
+.Hr.success{
+    background-color: var(--success);
+    color:var(--success-text-color);
+}
+.Hr.warning{
+    background-color:var(--warning);
+    color:var(--warning-text-color);
+}
+.Hr.warning:hover{
+    background-color: var(--warning-hover);
+}

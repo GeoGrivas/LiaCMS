@@ -36,7 +36,8 @@ const ComponentsList = (props) => {
                 importLocation: "/Section/Section",
                 children: [],
                 params: {
-                    printable: { value: 'no', type: 'select', options: ['no', 'yes'] }
+                    printable: { value: 'no', type: 'select', options: ['no', 'yes'] },
+                    backgroundColor: { value: '', type: 'select', options: ['', 'bg-white', 'bg-black', 'bg-primary', 'bg-secondary', 'bg-warning', 'bg-light', 'bg-dark', 'bg-danger', 'bg-success', 'bg-information'] }
                 },
                 type: "container"
             }}>Section</DraggableItem>
@@ -135,7 +136,7 @@ const ComponentsList = (props) => {
                     width: { value: '300px' },
                     style: { value: '', type: 'select', options: ['', 'rounded', 'circle'] }
                 }
-            }}>Image1</DraggableItem>
+            }}>Image</DraggableItem>
 
 
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
@@ -163,6 +164,13 @@ const ComponentsList = (props) => {
                     style: { value: '', type: 'select', options: ['', 'footer-item', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
                 }
             }}>Link</DraggableItem>
+            <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
+                component: "HorizontalLine",
+                importLocation: "/UI/HorizontalLine/HorizontalLine",
+                params: {
+                    style: { value: '', type: 'select', options: ['', 'footer-item', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
+                }
+            }}>HorizontalLine</DraggableItem>
         </div>
         <div>
             <h5>

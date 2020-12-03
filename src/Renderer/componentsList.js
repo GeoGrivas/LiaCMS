@@ -24,7 +24,8 @@ const componentsList={
     WrappedButton:dynamic(()=>import('../components/UI/Button/WrappedButton')),
     Link:dynamic(()=>import('../components/Link/Link')),
     Section:dynamic(()=>import('../components/Section/Section')),
-    SimpleText:dynamic(()=>import('../components/SimpleText/SimpleText'))
+    SimpleText:dynamic(()=>import('../components/SimpleText/SimpleText')),
+    HorizontalLine:dynamic(()=>import('../components/UI/HorizontalLine/HorizontalLine'))
 };
 
 
