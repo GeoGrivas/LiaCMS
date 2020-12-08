@@ -3,7 +3,16 @@ class Layout{
     content=[{
         component: "AppContainer",
         importLocation: "/AppContainer/AppContainer",
-        children: [],
+        children: [
+          {
+            component: "Content",
+            importLocation: "/Content/Content",
+            children: [
+            ],
+            id: 'Content1',
+            type: 'container'
+          }
+        ],
         id: 'main',
         type: 'container',
         ignoreHover: true

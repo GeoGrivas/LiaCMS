@@ -4,10 +4,11 @@ import { useState, useEffect, useRef } from 'react';
 import EditingPageRenderer from '../src/EditorRenderer/EditingPageRenderer';
 import { useRouter } from 'next/router';
 import InitAuthState from '../src/components/Authentication/InitAuthState';
-import componentsList from '../src/Renderer/componentsList';
+import componentsList from '../src/EditorRenderer/componentsList';
 import axios from 'axios';
 import DefaultErrorPage from 'next/error';
 import PageLoading from '../src/components/UI/PageLoading/PageLoading';
+import * as requests from '../src/EditorRenderer/Requests';
 const Page = (props) => {
 
     const router = useRouter();
@@ -21,12 +22,12 @@ const Page = (props) => {
             currentPage: currentPage,
             title: props.title
         });
-
+  
 
     useEffect(() => {
         if (isUpdate.current) {
             if (pageState.currentPage !== currentPage && !props.notFound) {
-                axios.get('https://api.adventurouscoding.com/pages/' + encodeURIComponent(currentPage)).then(response => {
+                axios.get(requests.getPublicPage(currentPage)).then(response => {
                     setPageState(
                         {
                             page: JSON.parse(response.data.content),
@@ -72,7 +73,13 @@ const Page = (props) => {
         }
     }
     let page = null;
-    if (router.isFallback) {
+    if (editing) {
+        return <React.Fragment>
+            <InitAuthState>
+                <EditingPageRenderer currentPage={currentPage} />
+            </InitAuthState>
+        </React.Fragment>
+    }else if (router.isFallback) {
         page = (<PageLoading />);
     } else if (props.notFound && !editing) {
         return (
@@ -84,7 +91,7 @@ const Page = (props) => {
             </Aux>
         )
     }
-    else if (!editing) {
+    else if (!editing && pageState.layout && pageState.page) {
         page = LeanComponentRender(pageState.layout[0] ? pageState.layout[0] : [], 'l');
     }
     return (
@@ -93,18 +100,7 @@ const Page = (props) => {
                 <title>{props.title}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            {editing ?
-                <React.Fragment>
-                    <InitAuthState>
-                        <EditingPageRenderer currentPage={currentPage} />
-                    </InitAuthState>
-                </React.Fragment>
-                :
-                <React.Fragment>
                     {page}
-                </React.Fragment>
-
-            }
         </React.Fragment>
     )
 };
@@ -112,26 +108,38 @@ const Page = (props) => {
 export default Page;
 
 export async function getStaticPaths() {
-    const response = await (await fetch("https://api.adventurouscoding.com/pages")).json();
-    const paths = response.map(path => ({ params: { page: (decodeURIComponent(path).substring(1).split('/')) }, }));
-    return {
-        paths,
-        fallback: true
+    try {
+        const response = await (await fetch(requests.getPublicPaths())).json();
+        const paths = response.map(path => ({ params: { page: (decodeURIComponent(path).substring(1).split('/')) }, }));
+        return {
+            paths,
+            fallback: true
+        }
+    } catch {
+        return {
+            paths: ['/'],
+            fallback: true
+        }
     }
+
 }
 export async function getStaticProps({ params }) {
     let route = params.page ? params.page : '';
-    const resp = await fetch("https://api.adventurouscoding.com/pages/" + encodeURIComponent('/' + route));
-    if (!resp.ok) {
-        if (resp.status >= 400 < 500) {
-            return { props: { notFound: true } };
-        } else {
-            return { props: { serverError: true } };
+    try {
+        const resp = await fetch(requests.getPublicPage('/' + route));
+        if (!resp.ok) {
+            if (resp.status >= 400 < 500) {
+                return { props: { notFound: true } };
+            } else {
+                return { props: { serverError: true } };
+            }
         }
+        const response = await resp.json();
+        const page = response.content;
+        const layout = response.layout;
+        const title = response.title;
+        return { props: { pageName: route, page: JSON.parse(page), layout: JSON.parse(layout.content), title, notFound: false }, revalidate: 1 }
+    } catch {
+        return { props: { pageName: '/' } }
     }
-    const response = await resp.json();
-    const page = response.content;
-    const layout = response.layout;
-    const title = response.title;
-    return { props: { pageName: route, page: JSON.parse(page), layout: JSON.parse(layout.content), title, notFound: false }, revalidate: 1 }
 }

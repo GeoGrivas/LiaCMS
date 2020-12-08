@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-
+import * as requests from '../../../../EditorRenderer/Requests';
 export const authStart = () => {
     return {
         type: actionTypes.AUTH_START
@@ -72,9 +72,9 @@ export const auth = (email, password, isSignup) => {
             username: email,
             password: password
         }
-        let url = 'https://api.adventurouscoding.com/authentication/register';
+        let url = requests.getRegisterUrl();
         if (!isSignup) {
-            url = 'https://api.adventurouscoding.com/authentication/login';
+            url = requests.getLoginUrl();
         }
         axios.post(url, authData)
             .then(response => {

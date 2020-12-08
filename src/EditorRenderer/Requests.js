@@ -21,3 +21,10 @@ export const getTemplate=(template)=>('https://api.adventurouscoding.com/managem
 export const deleteTemplate=(template)=>('https://api.adventurouscoding.com/management/templates/delete/' + encodeURIComponent(template));
 
 export const putTemplate=()=>('https://api.adventurouscoding.com/management/templates/put');
+
+export const getPublicPaths=()=>("https://api.adventurouscoding.com/pages");
+
+export const getPublicPage=(page)=>('https://api.adventurouscoding.com/pages/' + encodeURIComponent(page));
+
+export const getRegisterUrl=()=>('https://api.adventurouscoding.com/authentication/register');
+export const getLoginUrl=()=>('https://api.adventurouscoding.com/authentication/login');

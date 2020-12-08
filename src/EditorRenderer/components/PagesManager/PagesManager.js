@@ -31,6 +31,8 @@ class PagesManager extends Component {
                     });
             }).catch(err => {
                 console.log(err);
+                this.props.initEmptyPage();
+                console.log('heyy');
             });
     }
     loadPageHandler = (selectedPage) => {

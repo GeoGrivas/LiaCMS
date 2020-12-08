@@ -74,7 +74,7 @@ const addBordersToComponents = () => {
   let editors = document.getElementsByClassName('editorContainer');
   for (let i = 0; i < editors.length; i++) {
     if (editors[i].childNodes.length > 2) {
-      editors[i].childNodes[editors[i].childNodes.length - 1].classList.add('border');
+      editors[i].childNodes[editors[i].childNodes.length - 1].classList.add('editing-outline');
     }
   }
   return true;
@@ -83,7 +83,7 @@ export const removeBordersFromComponents = () => {
   let editors = document.getElementsByClassName('editorContainer');
   for (let i = 0; i < editors.length; i++) {
     if (editors[i].childNodes.length > 2) {
-      editors[i].childNodes[editors[i].childNodes.length - 1].classList.remove('border');
+      editors[i].childNodes[editors[i].childNodes.length - 1].classList.remove('editing-outline');
     }
   }
 }

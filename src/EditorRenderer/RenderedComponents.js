@@ -1,6 +1,6 @@
 import React from 'react';
 import ComponentRender from './Component';
-import LeanComponentRender from '../Renderer/LeanComponentRender';
+import LeanComponentRender from './LeanComponentRender';
 const RenderedComponents=(props)=>{
     const renderedComponents = props.contentComponents.map(block => {
         return <ComponentRender key={block.id + 's'} block={block} methods={props.methods} />;

@@ -1,7 +1,7 @@
 import React from 'react';
 import DraggableItem from '../DraggableItem/DraggableItem';
 
-const ComponentsList = (props) => {
+const ComponentsSideItem = (props) => {
     return (<React.Fragment>
         <div>
             <h5>
@@ -223,4 +223,4 @@ const ComponentsList = (props) => {
 }
 
 
-export default ComponentsList;
+export default ComponentsSideItem;

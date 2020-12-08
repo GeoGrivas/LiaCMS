@@ -9,7 +9,7 @@ import LayoutsManager from './components/LayoutsManager/LayoutsManager';
 import EditorLogin from './components/EditorLogin/EditorLogin';
 import SeoEditor from './components/SeoEditor/SeoEditor';
 import { toggleBordersOfComponents, DraggingStarted, removeComponent, saveComponentEdit } from './Logic/EditingLogic';
-import ComponentsList from './components/componentsList/componentsList2';
+import ComponentsSideItem from './components/ComponentsSideItem/ComponentsSideItem';
 import RenderedComponents from './RenderedComponents';
 import Redeploy from './components/Redeploy/Redeploy';
 import Button from '../components/UI/Button/Button';
@@ -188,7 +188,7 @@ class PageRenderer extends Component {
           Components
         </h4>
         <SidebarItem scrollable>
-          <ComponentsList
+          <ComponentsSideItem
             draggingEndedHandler={this.draggingEndedHandler}
             onDragHandler={this.onDragHandler}
             layoutEditing={this.state.layoutEditing}

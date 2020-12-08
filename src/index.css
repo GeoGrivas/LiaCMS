@@ -467,8 +467,8 @@ body {
 .ParamsEditor.show_editor{
   display:block;
 }
-.border{
-  border:3px dashed black !important;
+.editing-outline{
+  outline:3px dashed black !important;
 }
 
 .ParamsEditorBody {

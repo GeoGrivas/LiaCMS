@@ -29,5 +29,3 @@ export default function LeanComponentRender(props) {
         }, children)
     );
 }
-
-//export default LeanComponentRender;

@@ -78,20 +78,20 @@ class ComponentRender extends Component {
       component = dynamic(() => import('../components' + this.props.block.importLocation));
     }
     let children = null;
-    const level = this.props.block.level ? this.props.block.level : 0;
+   // const level = this.props.block.level ? this.props.block.level : 0;
     if(this.props.children)
     {
       children=this.props.children;
     }else if (this.props.block.type && this.props.block.type === "container" && this.props.block.children !== null && this.props.block.children !== undefined) {
       children = this.props.block.children.map(comp => {
-        comp.level = level + 1;
+        //comp.level = level + 1;
         return <ComponentRender key={comp.id + 'l'} block={comp} methods={this.props.methods}/>
       });
     }
     return (
 
 
-        <section style={{ zIndex: this.props.block.level ? this.props.block.level : 0 }}
+        <section //style={{ zIndex: this.props.block.level ? this.props.block.level : 0 }}
           onMouseUp={event => { this.onMouseUp(event); }}
           onMouseDown={event => { this.onMouseDown(event); }}
           onClick={event => { this.onClick(event, this.props.block.id) }}
@@ -104,7 +104,7 @@ class ComponentRender extends Component {
           {this.props.block.ignoreHover ? null :
             <Aux>
               <div id={this.props.block.id + 'drag'} draggable={true}
-                style={{ height: '15px', width: '15px', zIndex: this.props.block.level, position: "absolute", display: 'none' }}
+                style={{ height: '15px', width: '15px',  position: "absolute", display: 'none' }}
                 onDragStart={(event) => { event.stopPropagation(); this.props.methods.onDragStart(event, this.props.block) }}
                 onDragEnd={event => { this.props.methods.onDraggingEnded(event) }}>
               </div>

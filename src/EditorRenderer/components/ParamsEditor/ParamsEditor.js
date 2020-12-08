@@ -31,7 +31,7 @@ class ParamsEditor extends Component {
           {inputs !== null ? <button className={classes.Edit+' '+classes.Button} onClick={this.toggleOptions} style={{ zIndex: this.props.component.level + 2 }}>Edit</button> : null}
           <div className={classes.Button} draggable={true}
                 onDragStart={(event) => { event.stopPropagation(); this.props.onDragStart(event, this.props.component) }}
-                onDragEnd={event => { this.props.onDraggingEnded(event) }}>
+                onDragEnd={event => { this.props.onDragEnded(event) }}>
                   &#x2723;
               </div>
           <button className={classes.Remove+' '+classes.Button} onClick={(event) => {this.props.onRemove(this.props.component) }} style={{ zIndex: this.props.component.level + 2 }}>&times;</button>
