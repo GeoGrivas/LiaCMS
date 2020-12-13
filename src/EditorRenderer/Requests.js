@@ -28,3 +28,4 @@ export const getPublicPage=(page)=>('https://api.adventurouscoding.com/pages/' +
 
 export const getRegisterUrl=()=>('https://api.adventurouscoding.com/authentication/register');
 export const getLoginUrl=()=>('https://api.adventurouscoding.com/authentication/login');
+export const getRedeployUrl=()=>('https://api.adventurouscoding.com/management/deployment/redeploy');

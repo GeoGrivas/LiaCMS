@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import axios from 'axios';
 import Button from '../../../components/UI/Button/Button';
+import {getRedeployUrl} from '../../Requests';
 const Redeploy = (props) => {
     const [loading, setLoading] = useState(false);
     const onRedeployCliked = () => {
         setLoading(true);
-        axios.get('https://api.vercel.com/v1/integrations/deploy/QmVsq6DCBptN6PsZjdRqAhhmSvfY7URqan6m1KTC65JSJH/OPLjPH4YGi').then(resp => {
+        axios.get(getRedeployUrl()).then(resp => {
             setLoading(false);
         }).catch(err => {
             console.log(err);
