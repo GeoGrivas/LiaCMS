@@ -22,7 +22,6 @@ class LayoutsManager extends Component {
             else
                 this.props.initEmptyPage();
         }).catch(err=>{
-            console.log(err);
             this.props.initEmptyPage();
         });
     }
@@ -31,7 +30,7 @@ class LayoutsManager extends Component {
       
     }
     removePageHandler = () => {
-        axios.delete(requests.deleteLayout(his.state.selectedPage));
+        axios.delete(requests.deleteLayout(this.state.selectedPage));
         this.setState(prevState => {
             var idx = prevState.pages.indexOf(prevState.selectedPage);
             var currentPages = [...prevState.pages];
@@ -47,10 +46,8 @@ class LayoutsManager extends Component {
                 const pages = response2.data;
                 this.setState(prevState => ({ ...prevState, pages: pages }));
             }).catch(err => {
-                console.log(err);
             });
         }).catch(err => {
-            console.log(err.response.request._response);
         });
     }
     render() {
