@@ -18,10 +18,19 @@ First of all, you can see a live demo through my personal website.Check out the 
 
 That will give you access to the editor, however you won't be able to save any changes.
 
-In order to setup your own website, you will need a place to store and retrieve the pages, that could anything(a server,Firebase,etc). You can replace the API urls in the /src/EditorRenderer/Requests.js . To see what needs to be stored and retrieved, you can check the classes Page and Layout that are located at /src/EditorRenderer. In order for the login to work you will need to return a token and an expiration date(named token and expiration).
+In order to setup your own website, you will need a place to store and retrieve the pages, that could anything(a server,Firebase,etc).
 
-Once you're inside and you're editing, you can drag components from the components list into the canvas. Components may be of type containers so they'll be able to contain other components. If you wish to move a component you can do so by holding the click on it for at least 200ms and then start dragging. 
+You can replace the API urls in the /src/EditorRenderer/Requests.js.
+
+To see what needs to be stored and retrieved, you can check the classes Page and Layout that are located at /src/EditorRenderer.
+In order for the login to work you will need to return a token and an expiration date(named token and expiration).
+
+Once you're inside and you're editing, you can drag components from the components list into the canvas. 
+
+Components may be of type containers so they'll be able to contain other components. If you wish to move a component you can do so by holding the click on it for at least 200ms and then start dragging. 
+
 If you wish to edit/delete ALT+Click on it, also if a component has some kind of event or property that makes it unable to click and drag, you will find a button there that will help you with dragging.
+
 You can switch between Layout editing and Page editing,in Layout editing you create layouts, in Page editing you create pages. When you are editing a Layout, it must contain a Content component cause that's were the Page will be rendered afterwards.
 
 
