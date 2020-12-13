@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classes from './PagesManager.module.css';
-import axios from 'axios';
+import axios from '../../../Helpers/axiosInstance';
 import Button from '../../../components/UI/Button/Button';
 import * as requests from '../../Requests';
 import Page from '../../Page';
@@ -24,15 +24,12 @@ class PagesManager extends Component {
                     .then(response => {
                         const layouts = response.data;
                         this.setState(prevState => ({ currentLayout: this.props.layoutName, enabled: this.props.enabled, pages: pages, selectedPage: this.props.currentPage, currentPage: this.props.currentPage, layouts: layouts, selectedLayout: this.props.page.layoutName }));
-                        console.log(this.props);
                         if (this.props.shouldLoadPage) {
                             this.loadPageHandler(this.props.currentPage);
                         }
                     });
             }).catch(err => {
-                console.log(err);
                 this.props.initEmptyPage();
-                console.log('heyy');
             });
     }
     loadPageHandler = (selectedPage) => {
@@ -42,7 +39,6 @@ class PagesManager extends Component {
                 this.setState(prevState => ({ ...prevState, currentLayout: response.data.layoutName, selectedLayout: response.data.layoutName, enabled: response.data.enabled }));
             }).catch(err => {
                 this.props.initEmptyPage();
-                console.log("error" + err);
             });
     }
     removePageHandler = () => {
@@ -56,16 +52,15 @@ class PagesManager extends Component {
     }
     savePageHandler = () => {
         var page = this.props.page;
-        console.log(page);
         axios.put(requests.putPage(), {
             path: encodeURIComponent(this.state.currentPage),
-            enabled : this.state.enabled,
-            title :page.title,
-            description : page.description,
-            type : page.type,
-            image : page.image,
-            content :JSON.stringify(page.content),
-            layoutName : page.layoutName
+            enabled: this.state.enabled,
+            title: page.title,
+            description: page.description,
+            type: page.type,
+            image: page.image,
+            content: JSON.stringify(page.content),
+            layoutName: page.layoutName
         })
             .then(response1 => {
                 axios.get(requests.getPages())
@@ -73,10 +68,9 @@ class PagesManager extends Component {
                         const pages = response2.data.map(page => (decodeURIComponent(page)));
                         this.setState(prevState => ({ ...prevState, pages: pages }));
                     }).catch(err => {
-                        console.log(err);
+
                     });
             }).catch(err => {
-                console.log(err);
             });
     }
     onSelectLayout = (event) => {
@@ -93,7 +87,7 @@ class PagesManager extends Component {
         return (<div className={classes.Container}>
             <div>
                 <label htmlFor='checkbox_visible'>Enabled</label>
-                <input id='checkbox_visible' type='checkbox' checked={this.state.enabled?this.state.enabled:false} onChange={event => { const value = event.target.checked; this.setState(prevState => ({ ...prevState, enabled: value })) }} />
+                <input id='checkbox_visible' type='checkbox' checked={this.state.enabled ? this.state.enabled : false} onChange={event => { const value = event.target.checked; this.setState(prevState => ({ ...prevState, enabled: value })) }} />
             </div>
             <div>
                 <label htmlFor='page_path'>Page Path</label>

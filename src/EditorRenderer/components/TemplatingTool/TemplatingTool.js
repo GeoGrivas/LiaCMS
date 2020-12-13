@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from '../../../components/UI/Button/Button';
-import axios from 'axios';
+import axios from '../../../Helpers/axiosInstance';
 import classes from './TemplatingTool.module.css';
 import { removeBordersFromComponents, mapComponents } from '../../Logic/EditingLogic';
 import TemplatesManager from './TemplatesManager/TemplatesManager';
@@ -16,7 +16,6 @@ const TemplatingTool = (props) => {
                     document.querySelector('#main').style.width = '60%';
                     document.querySelector('#main').style.marginLeft = '40%';
                 }).catch(err => {
-                    console.log(err);
                 }
                 );
             } else {
@@ -66,7 +65,6 @@ const TemplatingTool = (props) => {
         props.setComponents(result);
     }
     const currentTemplate=()=>{
-        console.log(mappings);
         return mappings;
     }
     const loadTemplateMappings=(mappings)=>{

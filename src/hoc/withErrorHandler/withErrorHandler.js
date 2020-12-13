@@ -1,35 +1,37 @@
-import React,{Component} from 'react';
-import Modal from '../../components/UI/Modal/Modal';
-import Aux from '../Aux';
-import axios from '../../axios-orders';
-const withErrorHandler=(WrappedCompontnt)=>{
-    return class extends Component{
-        state={
-            error:null
+import React, { Component } from 'react';
+import axios from '../../Helpers/axiosInstance';
+import Alert from '../../components/UI/Alert/Alert';
+const withErrorHandler = (WrappedCompontnt) => {
+    return class extends Component {
+        state = {
+            error: null
         };
-        componentWillMount(){
-            this.reqInterceptor=axios.interceptors.request.use(request=>{
-                this.setState({error:null});
-                return request;
+        componentDidMount() {
+            this.resInterceptor = axios.interceptors.response.use(res => res, error => {
+                this.setState({ error: error });
+                if(error)
+                {
+                    throw error; 
+                }
             });
-            this.resInterceptor=axios.interceptors.response.use(res=>res,error=>{
-                this.setState({error:error});
-            });
+            
         }
-        errorConfirmedHandler=()=>{
-            this.setState({error:null});
+        closeErrorHandler = () => {
+            this.setState({ error: null });
         }
-      render(){
-           return(
-            <Aux>
-                <Modal show={this.state.error} modalClosed={this.errorConfirmedHandler}> 
-                    {this.state.error!=null?this.state.error.message:null}
-                </Modal>
-             <WrappedCompontnt {...this.props}></WrappedCompontnt>
-            </Aux>
+        render() {
+            return (
+                <React.Fragment>
+                    {this.state.error !== null ?
+                        <Alert class='danger' onClose={this.closeErrorHandler}>
+                            {this.state.error.message}
+                        </Alert> : null
+                    }
+                    <WrappedCompontnt {...this.props}></WrappedCompontnt>
+                </React.Fragment>
             );
-      }  
-    } 
+        }
+    }
 }
 
-export default  withErrorHandler;
+export default withErrorHandler;

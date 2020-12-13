@@ -4,7 +4,7 @@ import SidebarItem from './components/Layout/Sidebar/SidebarItem/SidebarItem';
 import { connect } from 'react-redux';
 import * as actions from '../components/Authentication/store/actions/index';
 import PagesManager from './components/PagesManager/PagesManager';
-import axios from 'axios';
+import axios from '../Helpers/axiosInstance';
 import LayoutsManager from './components/LayoutsManager/LayoutsManager';
 import EditorLogin from './components/EditorLogin/EditorLogin';
 import SeoEditor from './components/SeoEditor/SeoEditor';
@@ -18,6 +18,7 @@ import * as requests from './Requests';
 import Page from './Page';
 import cloneDeep from 'lodash.clonedeep';
 import PageLoading from '../components/UI/PageLoading/PageLoading';
+import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 class PageRenderer extends Component {
 
   state = {
@@ -31,7 +32,6 @@ class PageRenderer extends Component {
   dragging = false;
   switchEditingMode = () => {
     this.setState((prevState) => ({ layoutEditing: !prevState.layoutEditing }));
-    console.log(this.state.page);
   }
   toggleSeoModal = () => {
     this.setState((prevState) => ({ showSeoModal: !prevState.showSeoModal }));
@@ -161,7 +161,6 @@ class PageRenderer extends Component {
           this.setState(prevState=>({page:page}));
         }
       }).catch(err => {
-        console.log("error" + err);
       });
   }
 
@@ -278,4 +277,4 @@ const mapDispatchToProps = dispatch => {
     onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
   }
 }
-export default React.memo(connect(mapStateToProps, mapDispatchToProps)(PageRenderer));
+export default React.memo(connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(PageRenderer)));

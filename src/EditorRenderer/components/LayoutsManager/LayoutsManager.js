@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classes from './LayoutsManager.module.css';
-import axios from 'axios';
+import axios from '../../../Helpers/axiosInstance';
 import Button from '../../../components/UI/Button/Button';
 import * as requests from '../../Requests';
-import Page from '../../Page';
+
 class LayoutsManager extends Component {
     state = {
         currentPage: '',

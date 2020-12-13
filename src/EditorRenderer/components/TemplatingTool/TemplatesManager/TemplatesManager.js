@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../../../Helpers/axiosInstance';
 import * as requests from '../../../Requests';
 import Button from '../../../../components/UI/Button/Button';
 const TemplatesManager = (props) => {
@@ -13,7 +13,6 @@ const TemplatesManager = (props) => {
         axios.get(requests.getTemplates()).then(resp => {
             setTemplates(resp.data);
         }).catch(err => {
-            console.log(err);
         })
     }
     const onSelectChange = (event) => {
@@ -21,21 +20,18 @@ const TemplatesManager = (props) => {
             props.loadTemplateMappings(JSON.parse(resp.data.mappings));
             setTemplateName(resp.data.name);
         }).catch(err => {
-            console.log(err);
         })
     }
     const onTemplateSave = () => {
         axios.put(requests.putTemplate(), { Name: templateName, Mappings: JSON.stringify(props.getCurrentTemplate()) }).then(resp => {
             loadTemplates();
         }).catch(err => {
-            console.log(err);
         });
     }
     const onTemplateDelete = () => {
         axios.delete(requests.deleteTemplate(templateName)).then(resp => {
             loadTemplates();
         }).catch(err => {
-            console.log(err);
         })
     }
     return (

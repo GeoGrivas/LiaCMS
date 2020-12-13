@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Spinner from '../../../components/UI/Spinner/Spinner';
-import axios from 'axios';
+import axios from '../../../Helpers/axiosInstance';
 import Button from '../../../components/UI/Button/Button';
 import {getRedeployUrl} from '../../Requests';
 const Redeploy = (props) => {
@@ -10,7 +10,6 @@ const Redeploy = (props) => {
         axios.get(getRedeployUrl()).then(resp => {
             setLoading(false);
         }).catch(err => {
-            console.log(err);
         });
 
 
