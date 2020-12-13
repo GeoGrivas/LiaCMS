@@ -3,7 +3,6 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import axios from 'axios';
 import Litepicker from 'litepicker';
 import React, { useEffect, useState } from 'react';
-import Spinner from '../UI/Spinner/Spinner';
 
 const Datepicker2 = (props) => {
 
