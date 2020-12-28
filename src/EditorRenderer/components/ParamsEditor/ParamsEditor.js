@@ -28,18 +28,18 @@ class ParamsEditor extends Component {
 
       <div id={"paramsEditor"+this.props.component.id} className="ParamsEditor">
         <div className="Options">
-          {inputs !== null ? <button className={classes.Edit+' '+classes.Button} onClick={this.toggleOptions} style={{ zIndex: this.props.component.level + 2 }}>Edit</button> : null}
+          {inputs !== null ? <button className={classes.Edit+' '+classes.Button} onClick={this.toggleOptions}>Edit</button> : null}
           <div className={classes.Button} draggable={true}
                 onDragStart={(event) => { event.stopPropagation(); this.props.onDragStart(event, this.props.component) }}
                 onDragEnd={event => { this.props.onDragEnded(event) }}>
                   &#x2723;
               </div>
-          <button className={classes.Remove+' '+classes.Button} onClick={(event) => {this.props.onRemove(this.props.component) }} style={{ zIndex: this.props.component.level + 2 }}>&times;</button>
+          <button className={classes.Remove+' '+classes.Button} onClick={(event) => {this.props.onRemove(this.props.component) }}>&times;</button>
         </div>
         <div className='ParamsEditorBody' onClick={(event)=>{event.stopPropagation()}}>
           {inputs !== null ?
             <div style={{ display: this.state.optionsOpen ? "block" : "none"}}>
-              <button className={classes.Button+' '+classes.Close} onClick={(event) => { event.preventDefault(); event.stopPropagation(); this.toggleOptions(); }} style={{ zIndex: this.props.component.level + 2 }}>&times;</button>
+              <button className={classes.Button+' '+classes.Close} onClick={(event) => { event.preventDefault(); event.stopPropagation(); this.toggleOptions(); }}>&times;</button>
           <span>{'Editing:'+this.props.component.component}</span>
               <form onSubmit={(event) => { this.props.onEdit(event, this.props.component) }}>
                 <h4 style={{textAlign:'center'}}>Parameters:</h4>

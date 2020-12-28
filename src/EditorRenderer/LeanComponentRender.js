@@ -22,10 +22,10 @@ export default function LeanComponentRender(props) {
             return <LeanComponentRender key={comp.id + 'l'} block={comp} content={content} />
         });
     }
+    
     return (
         React.createElement(component, {
-            block: props.block,
-            
+            block: props.block
         }, children)
     );
 }
