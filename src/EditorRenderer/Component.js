@@ -22,6 +22,7 @@ class ComponentRender extends Component {
       }
     }, 250);
   }
+
   onClick = (event, id) => {
     event.stopPropagation();
 
@@ -97,7 +98,10 @@ class ComponentRender extends Component {
           <Aux>
             <div id={this.props.block.id + 'drag'} draggable={true}
               style={{ height: '15px', width: '15px', position: "absolute", display: 'none' }}
-              onDragStart={(event) => { event.stopPropagation(); this.props.methods.onDragStart(event, this.props.block) }}
+              onDragStart={(event) => {
+                event.stopPropagation();
+                this.props.methods.onDragStart(event, this.props.block);
+              }}
               onDragEnd={event => { this.props.methods.onDraggingEnded(event) }}>
             </div>
             <ParamsEditor component={this.props.block} onEdit={this.props.methods.onEdit} onDragEnded={this.props.methods.onDraggingEnded} onRemove={this.props.methods.onRemove} onDragStart={this.props.methods.onDragStart} />

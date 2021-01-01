@@ -24,7 +24,7 @@ class PageRenderer extends Component {
   state = {
     page: new Page(),
     mode: 'building',
-    loading:true
+    loading: true
   }
   showSeoModal = false;
   draggingComponent = null;
@@ -72,33 +72,46 @@ class PageRenderer extends Component {
 
 
   onSaveSeo = (properties) => {
-    let page=cloneDeep(this.state.page);
-    page={...page,...properties};
-    this.setState((prevState) => ({ ...prevState, page:page }));
+    let page = cloneDeep(this.state.page);
+    page = { ...page, ...properties };
+    this.setState((prevState) => ({ ...prevState, page: page }));
   }
+
   onDragOver = (event, component) => {
     event.preventDefault();
     event.stopPropagation();
-    const isShiftPressed = event.shiftKey;
-    toggleBordersOfComponents(this.dragging);
-    if (this.state.layoutEditing) {
-      const result = DraggingStarted(this.draggingComponent, component, this.state.page.layout.content, isShiftPressed);
-      if (result !== null) {
-        let tempPage = cloneDeep(this.state.page);
-        tempPage.layout.content = result;
-        this.setState((prevState) => ({ page: tempPage }));
+     const isShiftPressed = event.shiftKey;
+      toggleBordersOfComponents(this.dragging);
+      if (this.state.layoutEditing) {
+        const result = DraggingStarted(this.draggingComponent, component, this.state.page.layout.content, isShiftPressed);
+        if (result !== null) {
+          let tempPage = cloneDeep(this.state.page);
+          tempPage.layout.content = result;
+          this.setState((prevState) => ({ page: tempPage }));
+        }
+      } else {
+        const result = DraggingStarted(this.draggingComponent, component, this.state.page.content, isShiftPressed);
+        if (result !== null) {
+          this.setState((prevState) => ({ page: { ...prevState.page, content: result } }));
+        }
       }
-    } else {
-      const result = DraggingStarted(this.draggingComponent, component, this.state.page.content, isShiftPressed);
-      if (result !== null) {
-        this.setState((prevState) => ({ page: { ...prevState.page, content: result } }));
-      }
-    }
 
+
+  }
+  setCorrectDragImage = (event,elementId) => {
+    const parent = document.getElementById(elementId);
+    if(parent)
+    {
+      const elem = parent.childNodes[parent.childNodes.length - 1];
+      event.dataTransfer.setDragImage(elem, 0, 0);
+      event.target.style.height = elem.offsetHeight + 'px';
+      event.target.style.width = elem.offsetWidth + 'px';
+    }
   }
   onDragHandler = (event, component) => {
     this.dragging = true;
     toggleBordersOfComponents(this.dragging);
+    this.setCorrectDragImage(event,component.id);
     this.draggingComponent = component;
     if (!this.draggingComponent.id)
       this.draggingComponent.id = this.idGenerator(this.draggingComponent.component);
@@ -112,33 +125,31 @@ class PageRenderer extends Component {
     event.preventDefault();
     toggleBordersOfComponents(this.dragging);
     let page = cloneDeep(this.state.page);
-    if(this.state.layoutEditing)
-    {
+    if (this.state.layoutEditing) {
       const newComponents = saveComponentEdit(this.state.page.layout.content, component, event.target.elements);
-      page.layout.content=newComponents;
-    }else{
+      page.layout.content = newComponents;
+    } else {
       const newComponents = saveComponentEdit(this.state.page.content, component, event.target.elements);
-      page.content=newComponents;
+      page.content = newComponents;
     }
-    this.setState({page:page  });
+    this.setState({ page: page });
     event.target.focus();
   }
-  setComponents=(components)=>{
+  setComponents = (components) => {
     let page = cloneDeep(this.state.page);
-    page.content=components;
-    this.setState({page:page  });
+    page.content = components;
+    this.setState({ page: page });
   }
   onRemoveClickedHandler = (component) => {
     let page = cloneDeep(this.state.page);
-    if(this.state.layoutEditing)
-    {
+    if (this.state.layoutEditing) {
       const newComponents = removeComponent(component, this.state.page.layout.content);
-      page.layout.content=newComponents;
-    }else{
+      page.layout.content = newComponents;
+    } else {
       const newComponents = removeComponent(component, this.state.page.content);
-      page.content=newComponents;
+      page.content = newComponents;
     }
-    this.setState({page:page  });
+    this.setState({ page: page });
   }
   idGenerator = (componentName) => {
     var S4 = function () {
@@ -155,10 +166,10 @@ class PageRenderer extends Component {
         const layout = response.data.content;
         if (layout) {
           let page = cloneDeep(this.state.page);
-          page.layoutName=layoutName;
-          page.layout.name=response.data.name;
-          page.layout.content=JSON.parse(response.data.content);
-          this.setState(prevState=>({page:page}));
+          page.layoutName = layoutName;
+          page.layout.name = response.data.name;
+          page.layout.content = JSON.parse(response.data.content);
+          this.setState(prevState => ({ page: page }));
         }
       }).catch(err => {
       });
@@ -248,7 +259,7 @@ class PageRenderer extends Component {
           </Sidebar>
           <div id='main' style={{ marginLeft: '20%', width: '80%' }}>
             <RenderedComponents
-              contentComponents={this.state.layoutEditing?this.state.page.layout.content:this.state.page.content}
+              contentComponents={this.state.layoutEditing ? this.state.page.layout.content : this.state.page.content}
               layoutComponents={this.state.page.layout.content}
               layoutEditing={this.state.layoutEditing}
               methods={this.methods}
