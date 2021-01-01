@@ -20,7 +20,7 @@ class ComponentRender extends Component {
           }
         }
       }
-    }, 250);
+    }, 100);
   }
 
   onClick = (event, id) => {
