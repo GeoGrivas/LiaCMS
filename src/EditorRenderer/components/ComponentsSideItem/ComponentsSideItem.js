@@ -17,7 +17,11 @@ const ComponentsSideItem = (props) => {
                 children: []
 
             }}>Responsive Navigation 1</DraggableItem>
-
+            <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
+                component: "Footer",
+                type: 'container',
+                children: []
+            }}>Footer</DraggableItem>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
                 component: "NavigationItem",
                 params: { url: { value: "/home" }, text: { value: "Home" } }
