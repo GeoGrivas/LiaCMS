@@ -5,7 +5,6 @@ const componentsList = {
     AppContainer: dynamic(() => import('../components/AppContainer/AppContainer')),
     Authentication: dynamic(() => import('../components/Authentication/Authentication')),
     InitAuthState: dynamic(() => import('../components/Authentication/InitAuthState')),
-    ButtonLink: dynamic(() => import('../components/ButtonLink/ButtonLink')),
     Card: dynamic(() => import('../components/Card/Card')),
     Container: dynamic(() => import('../components/Container/Container')),
     Header: dynamic(() => import('../components/Header/Header')),
@@ -26,7 +25,8 @@ const componentsList = {
     Section: dynamic(() => import('../components/Section/Section')),
     SimpleText: dynamic(() => import('../components/SimpleText/SimpleText')),
     HorizontalLine: dynamic(() => import('../components/UI/HorizontalLine/HorizontalLine')),
-    Footer: dynamic(() => import('../components/Footer/Footer'))
+    Footer: dynamic(() => import('../components/Footer/Footer')),
+    Label:dynamic(()=>import('../components/UI/Label/Label'))
 };
 
 

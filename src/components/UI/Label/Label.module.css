@@ -1,0 +1,43 @@
+.label {
+    padding: 8px;
+    border-radius: 0.2em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+}
+
+.label.primary {
+    background-color: var(--primary);
+    color: var(--primary-text-color);
+}
+
+.label.primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.label.primary:focus {
+    outline-color: var(--primary-outline);
+}
+
+.label.danger {
+    background-color: var(--danger);
+    color: var(--danger-text-color);
+}
+
+.label.danger:hover {
+    background-color: var(--danger-hover);
+}
+
+.label.success {
+    background-color: var(--success);
+    color: var(--success-text-color);
+}
+
+.label.warning {
+    background-color: var(--warning);
+    color: var(--warning-text-color);
+}
+
+.label.warning:hover {
+    background-color: var(--warning-hover);
+}

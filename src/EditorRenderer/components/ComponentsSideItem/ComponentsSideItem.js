@@ -108,6 +108,14 @@ const ComponentsSideItem = (props) => {
                     style: { value: '', type: 'select', options: ['', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
                 },
             }}>Button</DraggableItem>
+            
+            <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
+                component: "Label",
+                params: {
+                    text: { value: "Label", type: 'textarea' },
+                    style: { value: '', type: 'select', options: ['', 'primary', 'secondary', 'warning', 'light', 'dark', 'danger', 'success', 'information'] }
+                },
+            }}>Label</DraggableItem>
             <DraggableItem onDragEnd={props.draggingEndedHandler} onDragStart={props.onDragHandler} data={{
                 component: "Header",
                 params: { title: { value: "title" }, subtitle: { value: "sub title" }, backgroundImage: { value: "default" } }
