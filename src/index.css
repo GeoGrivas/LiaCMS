@@ -513,6 +513,10 @@ body {
 }
 
 @media print {
+  button{
+    background-color: var(--primary);
+    color:var(--primary-text-color);
+  }
   header{
     display:none!important;
   }
