@@ -2,7 +2,7 @@ Welcome to LiaCMS, a bodiless (in contrast to headless) CMS, in other words, a C
 
 What is LiaCMS exactly?
 
-Well, it's a drag n drop website builder, built with React and Nextjs. 
+Well, it's a <b>proof of concept</b> drag n drop website builder, built with React and Nextjs. 
 It currently powers my personal website at https://adventurouscoding.com/.
 
 Features:
