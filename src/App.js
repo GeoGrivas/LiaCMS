@@ -20,7 +20,6 @@ const App = props => {
       setAppState({ ...appState, layout: layout });
 
   };
-  console.log(props);
   const editing = false;//urlParams.has('edit');
   if (editing)
     document.querySelector('body').style.height = '5000px';
